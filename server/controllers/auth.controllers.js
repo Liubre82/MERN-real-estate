@@ -10,7 +10,7 @@ export const signup = async (req, res, next) => {
         await newUser.save()
         res.status(201).json('User created successfully')
     } catch(err) {
-        next(errorHandler(550, 'error from the function')) //sets statuscode and msg of the error obj
+        next(err) //pass the err obj to the next middleware, which will be the errorHandling middleware
     }
 
 }
