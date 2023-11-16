@@ -1,43 +1,69 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 export default function SignIn() {
   const[formData, setFormData] = useState({})
+  const[error, setError] = useState(null)
+  const[loading, setLoading] = useState(false)
+  const navigate = useNavigate()
 
   const handleChange = (event) => {
-    setFormData(
-      {...formData, [event.target.name]: event.target.value}
-    )
+    setFormData({
+      ...formData,
+      [event.target.name]: event.target.value 
+    })
   }
 
   const handleSubmit = async (event) => {
-    event.preventDefault()
-    const res = await fetch('/api/auth/signin', {
-      method: "POST",
-      headers: {"Content-type": "application/json"},
-      body: JSON.stringify(formData),
 
-    })
-    const data = res.json()
+    event.preventDefault()
+    try {
+      setLoading(true) 
+      const res = await fetch('/api/auth/signin', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData) 
+      })
+      const data = await res.json()
+
+      if(data.success === false) { loading
+        setError(data.message)
+        setLoading(false)
+        return
+      }
+      setLoading(false) //post request is successful, end the loading by setting it false.
+      setError(null) 
+      console.log("navigate")
+      navigate('/')
+    } catch(err) {
+      setError(err.message)
+      setLoading(false)
+    }
+
+    //console.log("returned: ", data)
   }
-  console.log(formData)
+
 
   return (
-    <div className=' max-w-lg m-auto'>
-      <h1 className='text-3xl text-center m-5'>Sign In</h1>
+    <div className='p-3 max-w-lg mx-auto'>
 
-      <form className='flex flex-col gap-5' onSubmit={handleSubmit}>
-        <input className='p-3 rounded-lg' type="text" name='username' id='username' placeholder='username' onChange={handleChange}/>
+      <h1 className='text-3xl text-center font-semibold my-7'>Sign In</h1>
 
-        <input className='p-3' type="password" name='password' id='password' placeholder='password' onChange={handleChange}/>
-        <button className='p-3 bg-slate-700 text-slate-100'>Sign In</button>
+      <form onSubmit={handleSubmit} className='flex flex-col gap-4'> 
+        <input type="text" name='username' id='username' placeholder='username' className='border p-3 rounded-lg' onChange={handleChange}/>
+        <input type="password" name='password' id='password' placeholder='password' className='border p-3 rounded-lg' onChange={handleChange}/>
+        <button disabled={loading} className='bg-slate-700 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-70'>{loading ? 'Loading...' : 'Sign In'}</button>
       </form>
+
       <div className='flex gap-2 mt-5'>
         <p>Dont have an account? </p>
         <Link to={'/sign-up'}>
-          <span className='text-blue-700 hover:underline'>Sign Up</span>
+          <span className='text-blue-700 hover:underline'>Sign In</span>
         </Link>
       </div>
+      {error && <p className='text-red-500 mt-5'>{error}</p>} {/*Short circuit evaluation*/}
     </div>
   )
 }
