@@ -16,7 +16,7 @@ export default function SignUp() {
   }
 
   const handleSubmit = async (event) => {
-    //fetch returns a promise, body: is the data that we will be sending, we serialized it by using stringify(), running the fetch post method, we will post the info to the endpoint and our signup route handler will handle this post request and return either a json or an err obj from the error handler
+    //fetch sends a post request from the client, and returns a promise. body: is the data that we will be sending, we serialized it by using stringify(), we will post the info to the endpoint and our signup 'post' route handler will handle this post request and return either a json or an err obj from the error handler
     //https://www.freecodecamp.org/news/javascript-post-request-how-to-send-an-http-post-request-in-js/
     event.preventDefault()
     try {
