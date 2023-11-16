@@ -15,6 +15,10 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true
+    },
+    accountImage: {
+        type: String,
+        default: "https://i.stack.imgur.com/34AD2.jpg"
     }
 }, {timestamps: true}) //when user schema is called, the time of a user obj creation or update, it records the time of when it happened.
 
