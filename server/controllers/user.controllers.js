@@ -20,7 +20,7 @@ export const updateUser = async (req, res, next) => {
         }
 
         //find the user from the model with the id, and set every property to the 
-        const update = await User.findByIdAndUpdate(id, {
+        const updateUser = await User.findByIdAndUpdate(id, {
             //$set operator will check for us if the input was changed, if there was no change. for ex: if the user did not input anything in the email inputbox, then $set will ignore that input and it retains its original value. 
             //always specify each indvidual property, passing req.body can cause security issues where users can add their own properties like say in a api tester and just pass fields  that are technically not allowed but since its in the req.body it will get passed in.
             $set: {
@@ -28,8 +28,8 @@ export const updateUser = async (req, res, next) => {
             }
         }, {new: true})
 
-        const {password, ...rest} = update._doc
-        res.status(200).json(rest)
+        const {password, ...otherDetails} = updateUser._doc;
+        res.status(200).json(otherDetails)
     } catch (err) {
         next(err)
     }

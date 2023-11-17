@@ -51,6 +51,7 @@ export const signInGoogle = async (req, res, next) => {
             const hashedPassword = bcrypt.hashSync(generatedPassword, 10)
             const concatUsername = username.split(" ").join("").toLowerCase()
             const newUser = new User({ username: concatUsername, email, password: hashedPassword, accountImage: photo })
+            await newUser.save()
             const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET)
             const { password: pass, ...otherDetails } = newUser._doc;
             res
