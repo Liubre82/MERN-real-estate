@@ -3,12 +3,14 @@ import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 import userRouter from './routes/user.routes.js'
 import authRouter from './routes/auth.routes.js'
+import cookieParser from 'cookie-parser'
 dotenv.config()
 
 const app = express()
 
 //allows json as the input to the server
 app.use(express.json())
+app.use(cookieParser())
 
 
 mongoose.connect(process.env.mongodbConnect).then(() => {
@@ -18,7 +20,7 @@ mongoose.connect(process.env.mongodbConnect).then(() => {
     console.log(err)
 })
 
-// app.use('/api/user', userRouter)
+app.use('/api/user', userRouter)
 app.use('/api/auth', authRouter)
 
 app.use((err, req, res, next) => {
