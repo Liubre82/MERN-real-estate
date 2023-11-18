@@ -34,3 +34,16 @@ export const updateUser = async (req, res, next) => {
         next(err)
     }
 }
+
+export const deleteUser = async (req, res, next) => {
+    const { id } = req.params
+    //req.user is a property that was added to the req obj in the previous middleware. and it stores info on the current user that is logged in.
+    if(req.user.id !== id) return next(errorHandler(401, 'You can only delete your own account!'))
+    try {
+        const user = await User.findByIdAndDelete(id)
+        res.clearCookie('access_token')
+        res.status(200).json('User has been deleted...')
+    } catch (err) {
+        next(err)
+    }
+}
