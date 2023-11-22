@@ -2,11 +2,12 @@ import { useSelector } from 'react-redux'
 import { useRef, useState, useEffect } from 'react'
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage'
 import { app } from '../firebase'
-import { updateUserStart, updateUserSuccess, updateUserFailure, deleteUserFailure, deleteUserStart, deleteUserSuccess, signOutUserStart, signOutUserSuccess, signOutUserFailure} from '../redux/user/userSlice'
+import { updateUserStart, updateUserSuccess, updateUserFailure, deleteUserFailure, deleteUserStart, deleteUserSuccess, signOutUserStart, signOutUserSuccess, signOutUserFailure } from '../redux/user/userSlice'
 import { useDispatch } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 export default function Profile() {
-  const { currentUser, loading, error  } = useSelector((state) => state.user)
+  const { currentUser, loading, error } = useSelector((state) => state.user)
   const fileRef = useRef(null)
   const [file, setFile] = useState(undefined)
   const [filePerc, setFilePerc] = useState(0)
@@ -73,14 +74,14 @@ export default function Profile() {
         body: JSON.stringify(formData)
       })
       const data = await res.json()
-      if(data.success === false) {
+      if (data.success === false) {
         dispatch(updateUserFailure(data.message))
         return
       }
       dispatch(updateUserSuccess(data))
       setUpdateSuccess(true)
-    } catch(err) {
-      
+    } catch (err) {
+
       dispatch(updateUserFailure(err.message))
     }
 
@@ -93,12 +94,12 @@ export default function Profile() {
         method: 'DELETE'
       })
       const data = res.json()
-      if(data.success === false) {
+      if (data.success === false) {
         dispatch(deleteUserFailure(data.message))
         return
       }
       dispatch(deleteUserSuccess(data))
-    } catch(err) {
+    } catch (err) {
       dispatch(deleteUserFailure(err.message))
     }
   }
@@ -108,12 +109,12 @@ export default function Profile() {
       dispatch(signOutUserStart())
       const res = await fetch('/api/auth/signout')
       const data = await res.json()
-      if(data.success === false) {
+      if (data.success === false) {
         dispatch(signOutUserFailure(data.message))
         return
       }
       dispatch(signOutUserSuccess(data))
-    } catch(err) {
+    } catch (err) {
       dispatch(signOutUserFailure(err.message))
     }
   }
@@ -123,11 +124,11 @@ export default function Profile() {
       <h1 className='text-3xl font-semibold text-center my-7'>Profile</h1>
 
       <form className='flex flex-col gap-5' onSubmit={handleSubmit}>
-        <input onChange={(event) => setFile(event.target.files[0])} type="file" ref={fileRef} hidden/>
+        <input onChange={(event) => setFile(event.target.files[0])} type="file" ref={fileRef} hidden />
 
         <img onClick={() => fileRef.current.click()} className='rounded-full h-24 w-24 object-cover self-center mt-2' src={formData.accountImage || profileImg} alt="Profile Image" />
         <p>
-        {fileUploadError ? (
+          {fileUploadError ? (
             <span className='text-red-700'>
               Error Image upload (image must be less than 2 mb)
             </span>
@@ -140,13 +141,16 @@ export default function Profile() {
           )}
         </p>
 
-        <input className='border rounded-lg p-3 ' type="text" name='username' id='username' placeholder='username' defaultValue={currentUser.username} onChange={handleChange}/>
+        <input className='border rounded-lg p-3 ' type="text" name='username' id='username' placeholder='username' defaultValue={currentUser.username} onChange={handleChange} />
 
-        <input className='border rounded-lg p-3 ' type="email" name='email' id='email' placeholder='email' defaultValue={currentUser.email} onChange={handleChange}/>
+        <input className='border rounded-lg p-3 ' type="email" name='email' id='email' placeholder='email' defaultValue={currentUser.email} onChange={handleChange} />
 
         <input className='border rounded-lg p-3 ' type="password" name='password' id='password' placeholder='password' onChange={handleChange} />
 
         <button className='bg-slate-700 text-white rounded-lg p-3 hover:opacity-90 disabled:opacity-70'>Update</button>
+        <Link to={'/create-listing'} className='bg-green-700 text-white rounded-lg p-3 hover:opacity-90 disabled:opacity-70 text-center'>
+            Create Listing
+        </Link>
       </form>
 
       <div className='flex justify-between mt-5'>
