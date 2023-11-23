@@ -55,6 +55,7 @@ export const getUserListing = async (req, res, next) => {
         try {
             //every listing created has a userId attatch to it, indicating which user created the listing. to find all the listings of the current logged in user just search the Listing collection for the userId in the 'userRef' field
             const listings = await Listing.find({ userRef: userId })
+            //sends an array of docs/objs of every listing the current user created.
             res.status(200).json(listings)
         } catch (err) {
             next(err)

@@ -14,9 +14,11 @@ export default function Profile() {
   const [fileUploadError, setFileUploadError] = useState(false)
   const [formData, setFormData] = useState({})
   const [updateSuccess, setUpdateSuccess] = useState(false)
+  const [showListingError, setShowListingError] = useState(false)
+  const [userListings, setUserListings] = useState([])
   const profileImg = currentUser.accountImage
   const dispatch = useDispatch()
-
+  console.log(currentUser)
   //firebase storage
   // allow read;
   // allow write: if
@@ -29,6 +31,7 @@ export default function Profile() {
     }
   }, [file]);
 
+  //uploads a single image to change the profile pic of current user
   const handleFileUpload = (file) => {
     const storage = getStorage(app);
     const fileName = new Date().getTime() + file.name;
@@ -52,8 +55,6 @@ export default function Profile() {
       }
     );
   };
-
-
 
   const handleChange = (event) => {
     setFormData({
@@ -119,6 +120,22 @@ export default function Profile() {
     }
   }
 
+  const handleShowListings = async () => {
+    try {
+      setShowListingError(false)
+      const res = await fetch(`/api/user/listings/${currentUser._id}`)
+      const data = await res.json()
+      if (data.success === false) {
+        setShowListingError(true)
+        return
+      }
+      //store the returned array from fetch of all the user listings fetched from the api into the userListings state so we can access it in our jsx.
+      setUserListings(data)
+    } catch (err) {
+      setShowListingError(true)
+    }
+  }
+
   return (
     <div className='max-w-lg m-auto p-3'>
       <h1 className='text-3xl font-semibold text-center my-7'>Profile</h1>
@@ -149,7 +166,7 @@ export default function Profile() {
 
         <button className='bg-slate-700 text-white rounded-lg p-3 hover:opacity-90 disabled:opacity-70'>Update</button>
         <Link to={'/create-listing'} className='bg-green-700 text-white rounded-lg p-3 hover:opacity-90 disabled:opacity-70 text-center'>
-            Create Listing
+          Create Listing
         </Link>
       </form>
 
@@ -159,6 +176,33 @@ export default function Profile() {
       </div>
       <p className='text-red-600 mt-5'>{error ? error : ''}</p>
       <p className='text-green-700 mt-5'>{updateSuccess ? 'User is updated successfully!' : ''}</p>
+      <button onClick={handleShowListings} className='text-green-700 text-lg font-bold w-full'>Show Listings</button>
+      <p className='text-red-700 mt-5'>
+        {showListingError ? 'Error showing listings' : ''}
+      </p>
+
+
+
+      <div className='mt-10'>
+        <h1 className='text-2xl font-bold text-center'>{currentUser.username} Listings</h1>
+        {userListings && userListings.length > 0 && userListings.map(listing => (
+          <div key={listing._id} className='border border-slate-400 p-3 flex justify-between items-center my-5 rounded-lg'>
+            <Link to={`/listing/${listing._id}`}>
+              <section className='flex flex-grow-1 items-center gap-3 font-mono hover:underline'>
+                <img src={listing.imageUrls[0]} alt="listing Thumbnail" className='w-20 h-20 object-cover' />
+                <p className='text-lg font-medium truncate'>{listing.name}</p>
+              </section>
+            </Link>
+
+
+            <section className='flex flex-col flex-3 gap-1'>
+              <button className='text-red-700 font-semibold hover:underline p-1 rounded border-red-700 hover:border'>DELETE</button>
+              <button className='text-green-600 font-semibold hover:underline p-1 rounded border-green-600 hover:border'>EDIT</button>
+            </section>
+          </div>
+        ))}
+      </div>
+
     </div>
 
   )
