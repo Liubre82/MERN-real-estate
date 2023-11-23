@@ -16,9 +16,11 @@ export default function Profile() {
   const [updateSuccess, setUpdateSuccess] = useState(false)
   const [showListingError, setShowListingError] = useState(false)
   const [userListings, setUserListings] = useState([])
+
+  const [showListing, setShowListing] = useState(false)
+
   const profileImg = currentUser.accountImage
   const dispatch = useDispatch()
-  console.log(currentUser)
   //firebase storage
   // allow read;
   // allow write: if
@@ -120,7 +122,8 @@ export default function Profile() {
     }
   }
 
-  const handleShowListings = async () => {
+  //sends a get request to api n retrieves all the listings created by the current logged in user and stores it in userListings state
+  const handleUserListings = async () => {
     try {
       setShowListingError(false)
       const res = await fetch(`/api/user/listings/${currentUser._id}`)
@@ -134,6 +137,26 @@ export default function Profile() {
     } catch (err) {
       setShowListingError(true)
     }
+  }
+
+  //negate showListing boolean on every click to toggle, this will allow us to toggle display the UserListings 'component'
+  const toggleShowListings = () => {
+    setShowListing(prev => !prev);
+    handleUserListings()
+  }
+
+  const handleDeleteListing = async (listingId) => {
+    try {
+      const res = await fetch(`/api/listing/delete/${listingId}`, {method: 'DELETE'})
+      const data = res.json()
+      if(data.success === false) {
+        return console.log(data)
+      }
+      setUserListings((prev) => prev.filter(listing => listing._id !== listingId))
+    } catch(err) {
+      console.log(err)
+    }
+
   }
 
   return (
@@ -176,33 +199,32 @@ export default function Profile() {
       </div>
       <p className='text-red-600 mt-5'>{error ? error : ''}</p>
       <p className='text-green-700 mt-5'>{updateSuccess ? 'User is updated successfully!' : ''}</p>
-      <button onClick={handleShowListings} className='text-green-700 text-lg font-bold w-full'>Show Listings</button>
+      <button onClick={toggleShowListings} className='text-green-700 text-lg font-bold w-full'>Show Listings</button>
       <p className='text-red-700 mt-5'>
         {showListingError ? 'Error showing listings' : ''}
       </p>
 
-
-
-      <div className='mt-10'>
-        <h1 className='text-2xl font-bold text-center'>{currentUser.username} Listings</h1>
-        {userListings && userListings.length > 0 && userListings.map(listing => (
-          <div key={listing._id} className='border border-slate-400 p-3 flex justify-between items-center my-5 rounded-lg'>
-            <Link to={`/listing/${listing._id}`}>
-              <section className='flex flex-grow-1 items-center gap-3 font-mono hover:underline'>
-                <img src={listing.imageUrls[0]} alt="listing Thumbnail" className='w-20 h-20 object-cover' />
-                <p className='text-lg font-medium truncate'>{listing.name}</p>
+      { //Show user Listings section, toggles depending on showListing boolean state
+        showListing &&
+        <div className='mt-10'>
+          <h1 className='text-2xl font-bold text-center'>{currentUser.username} Listings</h1>
+          {userListings && userListings.length > 0 && userListings.map(listing => (
+            <div key={listing._id} className='border border-slate-400 p-3 flex justify-between items-center my-5 rounded-lg'>
+              <Link to={`/listing/${listing._id}`}>
+                <section className='flex flex-grow-1 items-center gap-3 font-mono hover:underline'>
+                  <img src={listing.imageUrls[0]} alt="listing Thumbnail" className='w-20 h-20 object-cover' />
+                  <p className='text-lg font-medium truncate'>{listing.name}</p>
+                </section>
+              </Link>
+              <section className='flex flex-col flex-3 gap-1'>
+                <button onClick={() => handleDeleteListing(listing._id)} className='text-red-700 font-semibold hover:underline p-1 rounded border-red-700 hover:border'>DELETE</button>
+                <button className='text-green-600 font-semibold hover:underline p-1 rounded border-green-600 hover:border'>EDIT</button>
               </section>
-            </Link>
+            </div>
+          ))}
+        </div>
 
-
-            <section className='flex flex-col flex-3 gap-1'>
-              <button className='text-red-700 font-semibold hover:underline p-1 rounded border-red-700 hover:border'>DELETE</button>
-              <button className='text-green-600 font-semibold hover:underline p-1 rounded border-green-600 hover:border'>EDIT</button>
-            </section>
-          </div>
-        ))}
-      </div>
-
+      }
     </div>
 
   )

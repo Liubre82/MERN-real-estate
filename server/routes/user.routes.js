@@ -11,4 +11,5 @@ router.delete('/delete/:userId', verifyToken, deleteUser)
 
 router.get('/listings/:userId', verifyToken, getUserListing)
 
+
 export default router
