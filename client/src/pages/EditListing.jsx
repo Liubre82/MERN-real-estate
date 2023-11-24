@@ -1,13 +1,15 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { getStorage, uploadBytesResumable, ref, getDownloadURL, deleteObject } from 'firebase/storage'
 import { app } from '../firebase'
 import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
+import { v4 as uuidv4 } from 'uuid';
 
 //an array of the filenames that are currently uploaded by the user.
 const filenames = []
 
 export default function EditListing() {
+    const params = useParams();
     const navigate = useNavigate()
     const { currentUser } = useSelector(state => state.user)
     //stores the files the user uploads from the file input and stores it in an array
@@ -33,6 +35,20 @@ export default function EditListing() {
     const [error, setError] = useState(false)
     //state for the loading status of when the form is submitted
     const [loading, setLoading] = useState(false)
+
+    //retrieves the listing obj from the db to display the info as our 'initial form input values
+    useEffect(() => { 
+        const fetchListing = async () => {
+            const res = await fetch(`/api/listing/getList/${params.listingId}`)
+            const data = await res.json()
+            if(data.success === false) {
+                console.log(data.message)
+                return
+            }
+            setFormData(data)
+        }
+        fetchListing()
+    },[])
 
     //function that saves a single image to our firebase storage
     const storeImage = async (file) => {
@@ -148,15 +164,12 @@ export default function EditListing() {
             }
             setLoading(true)
             setError(false)
-            const res = await fetch('/api/listing/create', {
+            const res = await fetch(`/api/listing/edit/${params.listingId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({
-                    ...formData,
-                    userRef: currentUser._id
-                })
+                body: JSON.stringify(formData)
             })
             const data = await res.json()
             console.log(data)
@@ -173,7 +186,7 @@ export default function EditListing() {
     }
     return (
         <main className='p-3 max-w-4xl mx-auto'>
-            <h1 className='text-3xl font-semibold text-center my-7'>Create a Listing</h1>
+            <h1 className='text-3xl font-semibold text-center my-7'>Edit Listing</h1>
             <form className='flex flex-col sm:flex-row gap-5'>
                 {/* user inputs section */}
                 <section className='flex flex-col gap-4 flex-1'>
@@ -257,7 +270,7 @@ export default function EditListing() {
                     <div className='displayUploadedImage(s)'>
                         {
                             formData.imageUrls.length > 0 && formData.imageUrls.map((url, index) => (
-                                <div key={url} className='flex justify-between p-3 border items-center'>
+                                <div key={uuidv4()} className='flex justify-between p-3 border items-center'>
                                     <img src={url} alt="listing image" className='w-20 h-20 object-contain rounded-lg' />
                                     <button onClick={() => handleImageDelete(index)} type='button' className=' text-red-600 p-3 rounded-lg hover:underline uppercase'>Delete</button>
                                 </div>
@@ -266,7 +279,7 @@ export default function EditListing() {
                     </div>
 
                     <button type='button' disabled={loading || uploading} onClick={(handleSubmit)} className='mt-5 p-3 border rounded-lg bg-slate-700 text-white hover:opacity-95 hover:underline'>
-                        {loading ? 'Uploading New List...' : 'Create Listing'}
+                        {loading ? 'Updating Listing...' : 'Update Listing'}
                     </button>
                     {error && <p className='text-red-700 text-sm font-bold'>{error}</p>}
                 </section>

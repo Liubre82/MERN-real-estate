@@ -14,6 +14,8 @@ export const createListing = async (req, res, next) => {
     }
 }
 
+// for some odd reason insomnia does not run the error handler when the listing id cannot be found and it crashes our server when the id param in the url is not valid
+
 export const deleteListing = async (req, res, next) => {
     const { listingId } = req.params
     const findListing = await Listing.findById(listingId)
@@ -36,22 +38,36 @@ export const editListing = async (req, res, next) => {
     const { listingId } = req.params
     const findListing = await Listing.findById(listingId);
     if (findListing) {
-        
-    try {
-        const updatedListing = await Listing.findByIdAndUpdate(
-          listingId,
-          req.body,
-          { new: true }
-        );
-        res.status(200).json(updatedListing);
-      } catch (error) {
-        next(error);
-      }
+
+        try {
+            const updatedListing = await Listing.findByIdAndUpdate(
+                listingId,
+                req.body,
+                { new: true }
+            );
+            res.status(200).json(updatedListing);
+        } catch (error) {
+            next(error);
+        }
     } else {
         return next(errorHandler(404, 'Listing not found!'));
     }
     if (req.user.id !== findListing.userRef) {
-      return next(errorHandler(401, 'You can only update your own listings!'));
+        return next(errorHandler(401, 'You can only update your own listings!'));
+    }
+};
+
+export const getListing = async (req, res, next) => {
+    try {
+        const { listingId } = req.params
+        const findListing = await Listing.findById(listingId)
+        if(!findListing) {
+            return next(errorHandler(404, 'cannot find listing'))
+        }
+        res.status(200).json(findListing)
+    } catch (err) {
+        next(err)
     }
 
-  };
+
+}

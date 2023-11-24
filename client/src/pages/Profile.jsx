@@ -147,13 +147,13 @@ export default function Profile() {
 
   const handleDeleteListing = async (listingId) => {
     try {
-      const res = await fetch(`/api/listing/delete/${listingId}`, {method: 'DELETE'})
+      const res = await fetch(`/api/listing/delete/${listingId}`, { method: 'DELETE' })
       const data = res.json()
-      if(data.success === false) {
+      if (data.success === false) {
         return console.log(data)
       }
       setUserListings((prev) => prev.filter(listing => listing._id !== listingId))
-    } catch(err) {
+    } catch (err) {
       console.log(err)
     }
 
@@ -205,7 +205,7 @@ export default function Profile() {
       </p>
 
       { //Show user Listings section, toggles depending on showListing boolean state
-        showListing &&
+        showListing && userListings.length > 0 &&
         <div className='mt-10'>
           <h1 className='text-2xl font-bold text-center'>{currentUser.username} Listings</h1>
           {userListings && userListings.length > 0 && userListings.map(listing => (
@@ -218,7 +218,10 @@ export default function Profile() {
               </Link>
               <section className='flex flex-col flex-3 gap-1'>
                 <button onClick={() => handleDeleteListing(listing._id)} className='text-red-700 font-semibold hover:underline p-1 rounded border-red-700 hover:border'>DELETE</button>
-                <button className='text-green-600 font-semibold hover:underline p-1 rounded border-green-600 hover:border'>EDIT</button>
+                <Link to={`/edit-listing/${listing._id}`}>
+                  <button className='text-green-600 font-semibold hover:underline p-1 rounded border-green-600 hover:border'>EDIT</button>
+                </Link>
+
               </section>
             </div>
           ))}

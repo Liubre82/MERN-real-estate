@@ -49,6 +49,9 @@ const listingSchema = mongoose.Schema({
         type: [],
         required: true
     },
+    imageNames: {
+        type: []
+    },
     userRef: {
         type: String,
         required: true
