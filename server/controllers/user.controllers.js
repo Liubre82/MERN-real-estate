@@ -61,6 +61,6 @@ export const getUserListing = async (req, res, next) => {
             next(err)
         }
     } else {
-        return next(errorHandler(401, 'You can only delete your own account!'))
+        return next(errorHandler(401, 'You can only retrieve your own accounts listings!'))
     }
 }
