@@ -8,12 +8,14 @@ import { useNavigate } from 'react-router-dom'
 const filenames = []
 
 export default function CreateListing() {
+
     const navigate = useNavigate()
     const { currentUser } = useSelector(state => state.user)
     //stores the files the user uploads from the file input and stores it in an array
     const [files, setFiles] = useState([])
     const [formData, setFormData] = useState({
         imageUrls: [],
+        imageNames:[],
         name: "",
         description: "",
         address: "",
@@ -72,7 +74,7 @@ export default function CreateListing() {
             }
             Promise.all(promises).then((urls) => {
                 //adds images to the imageUrls array, and adds images to the existing array.  so if you upload some images and wanted to add more, it will not overwrite the previous uploads and instead concat/add to it.
-                setFormData({ ...formData, imageUrls: formData.imageUrls.concat(urls) })
+                setFormData({ ...formData, imageUrls: formData.imageUrls.concat(urls), imageNames: filenames })
                 setImageUploadError(false)
                 setUploading(false)
             }).catch((err) => {
@@ -254,7 +256,7 @@ export default function CreateListing() {
                     <p className='text-red-600'>
                         {imageUploadError && imageUploadError}
                     </p>
-                    <div className='displayUploadedImage(s)'>
+                    <div className='displayUploadedImage(s) flex flex-col gap-3'>
                         {
                             formData.imageUrls.length > 0 && formData.imageUrls.map((url, index) => (
                                 <div key={url} className='flex justify-between p-3 border items-center'>

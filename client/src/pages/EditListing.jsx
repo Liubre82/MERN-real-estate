@@ -6,7 +6,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid';
 
 //an array of the filenames that are currently uploaded by the user.
-const filenames = []
+let filenames = []
 
 export default function EditListing() {
     const params = useParams();
@@ -16,6 +16,7 @@ export default function EditListing() {
     const [files, setFiles] = useState([])
     const [formData, setFormData] = useState({
         imageUrls: [],
+        imageNames: [],
         name: "",
         description: "",
         address: "",
@@ -35,6 +36,8 @@ export default function EditListing() {
     const [error, setError] = useState(false)
     //state for the loading status of when the form is submitted
     const [loading, setLoading] = useState(false)
+    
+    console.log(formData)
 
     //retrieves the listing obj from the db to display the info as our 'initial form input values
     useEffect(() => { 
@@ -48,6 +51,7 @@ export default function EditListing() {
             setFormData(data)
         }
         fetchListing()
+        filenames = formData.imageNames
     },[])
 
     //function that saves a single image to our firebase storage
@@ -88,7 +92,8 @@ export default function EditListing() {
             }
             Promise.all(promises).then((urls) => {
                 //adds images to the imageUrls array, and adds images to the existing array.  so if you upload some images and wanted to add more, it will not overwrite the previous uploads and instead concat/add to it.
-                setFormData({ ...formData, imageUrls: formData.imageUrls.concat(urls) })
+                setFormData({ ...formData, imageUrls: formData.imageUrls.concat(urls),
+                imageNames: formData.imageNames.concat(...filenames) })
                 setImageUploadError(false)
                 setUploading(false)
             }).catch((err) => {
@@ -106,7 +111,7 @@ export default function EditListing() {
     const deleteImageFromFirebase = (index) => {
         const storage = getStorage(app);
         // Create a reference to the file to delete
-        const desertRef = ref(storage, filenames[index]);
+        const desertRef = ref(storage, formData.imageNames[index]);
         // Delete the file
         deleteObject(desertRef).then(() => {
             console.log("image deleted from firebase")
@@ -121,6 +126,9 @@ export default function EditListing() {
             ...formData,
             imageUrls: formData.imageUrls.filter((_, i) => {
                 //iterates the array and filters out the image in which the delete button was clicked on. the other images are returned and stored in a new array.
+                return i !== index
+            }),
+            imageNames: formData.imageNames.filter((_, i) => {
                 return i !== index
             })
         })
@@ -267,7 +275,7 @@ export default function EditListing() {
                     <p className='text-red-600'>
                         {imageUploadError && imageUploadError}
                     </p>
-                    <div className='displayUploadedImage(s)'>
+                    <div className='displayUploadedImage(s) flex flex-col gap-3'>
                         {
                             formData.imageUrls.length > 0 && formData.imageUrls.map((url, index) => (
                                 <div key={uuidv4()} className='flex justify-between p-3 border items-center'>
