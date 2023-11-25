@@ -5,6 +5,15 @@ import SwiperCore from 'swiper'
 import { Navigation } from 'swiper/modules'
 import 'swiper/css/bundle'
 import { v4 as uuidv4 } from 'uuid';
+import {
+  FaBath,
+  FaBed,
+  FaChair,
+  FaMapMarkedAlt,
+  FaMapMarkerAlt,
+  FaParking,
+  FaShare,
+} from 'react-icons/fa';
 
 export default function Listing() {
 
@@ -46,26 +55,67 @@ export default function Listing() {
 
       {listing && !loading && !error &&
         <div>
-            <Swiper navigation>
-              {listing.imageUrls.map((imgUrl, index) => {
-                return <SwiperSlide key={uuidv4()}>
-                  <div className='h-[550px]' style={{ background: `url(${imgUrl}) center no-repeat`, backgroundSize: 'cover'}}>
+          {/* navigation allows user to 'slide between the images with arrow buttons */}
+          {/* Swiper tag is the images section, displays user uploaded images */}
+          <Swiper navigation>
+            {listing.imageUrls.map((imgUrl, index) => {
+              return <SwiperSlide key={uuidv4()}>
+                <div className='h-[550px]' style={{ background: `url(${imgUrl}) center no-repeat`, backgroundSize: 'cover' }}>
 
-                  </div>
-                </SwiperSlide>
-              })}
-            </Swiper>
-          <section className='flex flex-col max-w-xl mx-auto gap-3 p-3 mt-5'>
-            <h1 className='text-2xl font-semibold mb-5'>{listing.name} - $ {listing.regularPrice}</h1>
-            <p>{listing.address}</p>
-            <button className='bg-red-800 p-2 rounded-lg text-white hover:opacity-90 hover:underline self-start w-40'>For Sale</button>
-            <p><b>Description- </b>{listing.description}</p>
-            <section className='flex gap-10 flex-wrap font-medium'>
-              <p>{listing.bedrooms} Beds</p>
-              <p className={listing.parking ? 'text-green-700' : 'text-red-500'}>{listing.bathrooms} Bathrooms</p>
-              <p>Parking Spot</p>
-              <p>{listing.furnished ? '' : 'Not'} furnished</p>
-            </section>
+                </div>
+              </SwiperSlide>
+            })}
+          </Swiper>
+          <section className='flex flex-col max-w-3xl mx-auto gap-3 p-3 mt-5'>
+            <div>
+              <p className='text-2xl font-semibold'>
+                {listing.name} - ${' '}
+                {listing.offer
+                  ? listing.discountPrice.toLocaleString('en-US')
+                  : listing.regularPrice.toLocaleString('en-US')}
+                {listing.type === 'rent' && ' / month'}
+              </p>
+              <p className='flex items-center mt-6 gap-2 text-slate-600  text-sm'>
+                <FaMapMarkerAlt className='text-green-700' />
+                {listing.address}
+              </p>
+              <div className='flex gap-4 my-5'>
+                <p className='bg-red-800 p-2 rounded-lg text-white self-start w-40 text-center'>
+                  {listing.type === 'rent' ? 'For Rent' : 'For Sale'}
+                </p>
+                {listing.offer && (
+                  <p className='bg-green-900 w-full max-w-[200px] text-white text-center p-2 rounded-md'>
+                    ${+listing.regularPrice - +listing.discountPrice} OFF
+                  </p>
+                )}
+              </div>
+            </div>
+            <p className='text-slate-800'> 
+              <span className='font-semibold text-black'>Description - </span>
+              {listing.description}
+            </p>
+            <ul className='flex gap-10 flex-wrap font-medium'>
+              <li className='flex gap-1 items-center'>
+                <FaBed className='text-lg'/>
+                {listing.bedrooms}
+                {listing.bedrooms > 1 ? ' Beds' : ' Bed'}
+              </li>
+              <li className='flex gap-1 items-center'>
+              <FaBath className='text-lg'/>
+                {listing.bathrooms}
+                {listing.bathrooms > 1 ? ' Bathrooms' : ' Bathroom'}
+              </li>
+              <li className='flex gap-1 items-center'>
+                {/* {listing.parking ?} */}
+                <FaParking/>
+                {listing.parking ? 'Parking Spot' : 'No Parking'}
+                
+              </li>
+              <li className='flex gap-1 items-center'>
+                <FaChair/>
+                {listing.furnished ? 'Furnished' : 'Not Furnished'}
+              </li>
+            </ul>
           </section>
         </div>
 
