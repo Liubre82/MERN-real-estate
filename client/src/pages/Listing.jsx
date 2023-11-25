@@ -14,14 +14,21 @@ import {
   FaParking,
   FaShare,
 } from 'react-icons/fa';
+import {useSelector} from 'react-redux'
+import { useNavigate } from "react-router-dom";
+import Contact from '../components/Contact.jsx'
 
 export default function Listing() {
 
   SwiperCore.use([Navigation])
   const params = useParams()
+  const navigate = useNavigate();
   const [listing, setListing] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
+  const [contact, setContact] = useState(false)
+  const [copied, setCopied] = useState(false);
+  const currentUser = useSelector(state => state.user)
 
   useEffect(() => {
     const fetchListing = async () => {
@@ -66,7 +73,24 @@ export default function Listing() {
               </SwiperSlide>
             })}
           </Swiper>
-          <section className='flex flex-col max-w-3xl mx-auto gap-3 p-3 mt-5'>
+          <div className='fixed top-[13%] right-[3%] z-10 border rounded-full w-12 h-12 flex justify-center items-center bg-slate-100 cursor-pointer'>
+            <FaShare
+              className='text-slate-500'
+              onClick={() => {
+                navigator.clipboard.writeText(window.location.href);
+                setCopied(true);
+                setTimeout(() => {
+                  setCopied(false);
+                }, 2000);
+              }}
+            />
+          </div>
+          {copied && (
+            <p className='fixed top-[23%] right-[5%] z-10 rounded-md bg-slate-100 p-2'>
+              Link copied!
+            </p>
+          )}
+          <section className='flex flex-col max-w-3xl mx-auto gap-4 p-3 mt-5'>
             <div>
               <p className='text-2xl font-semibold'>
                 {listing.name} - ${' '}
@@ -116,12 +140,20 @@ export default function Listing() {
                 {listing.furnished ? 'Furnished' : 'Not Furnished'}
               </li>
             </ul>
+
+            {/* if listing belongs to the current logged in user, display button to route them to edit listing page, if not, display button to contact/email the user that created the listing. */}
+            {currentUser && listing.userRef !== currentUser._d ? 
+            (
+              !contact ? <button onClick={() => setContact(true)} className='mt-5 bg-slate-700 text-white p-3 rounded-lg uppercase font-medium hover:opacity-90 hover:underline '>Contact Landlord</button> 
+              : 
+              <Contact listing={listing}/>
+            )
+            : 
+            <button onClick={() => navigate(`/edit-listing/${listing.userRef}`)}  className='mt-5 bg-green-700 text-white p-3 rounded-lg uppercase font-medium hover:opacity-90 hover:underline '>Edit Your Listing</button>}
           </section>
         </div>
-
-
-
       }
+      
     </main >
   )
 }

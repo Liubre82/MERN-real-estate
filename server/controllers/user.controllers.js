@@ -29,6 +29,7 @@ export const updateUser = async (req, res, next) => {
             }
         }, { new: true })
 
+        //destructure the updateUser obj, otherDetails has all the keys in updateUser EXCEPT password because it has been destructured beforehand, and any key specified before the spread operator in destructuring will not be added in. so otherDetails does not have the password key.
         const { password, ...otherDetails } = updateUser._doc;
         res.status(200).json(otherDetails)
     } catch (err) {
@@ -63,4 +64,19 @@ export const getUserListing = async (req, res, next) => {
     } else {
         return next(errorHandler(401, 'You can only retrieve your own accounts listings!'))
     }
+}
+
+export const getUser = async(req, res, next) => {
+    try {
+        const { userId } = req.params
+        const findUser = await User.findById(userId)
+        if(!findUser) return next(errorHandler(404, 'User not found!'))
+        //password is the key to destructure out of findUser, pass is the 'password'->value inside findUser
+        const { password: pass, ...otherDetails } = findUser._doc;
+        console.log(otherDetails)
+        res.status(200).json(otherDetails)
+    } catch(err) {
+        next(err)
+    }
+
 }
