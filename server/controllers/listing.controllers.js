@@ -109,7 +109,7 @@ export const getSearchListings = async (req, res, next) => {
         .limit(limit)
         .skip(startIndex)
 
-        res.status(200).json(listings)
+        return res.status(200).json(listings)
     } catch(err) {
         next(err)
     }
