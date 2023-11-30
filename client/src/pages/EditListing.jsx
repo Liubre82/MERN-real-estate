@@ -36,8 +36,6 @@ export default function EditListing() {
     const [error, setError] = useState(false)
     //state for the loading status of when the form is submitted
     const [loading, setLoading] = useState(false)
-    
-    console.log(formData)
 
     //retrieves the listing obj from the db to display the info as our 'initial form input values
     useEffect(() => { 

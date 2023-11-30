@@ -30,8 +30,8 @@ useEffect(() => {
 
         <Link to='/'>
           <h1 className='font-bold text-sm sm:text-xl flex flex-wrap'>
-            <span className='text-slate-500'>SaHand</span>
-            <span className='text-slate-700'>Estate</span>
+            <span className='text-slate-500'>Estate</span>
+            <span className='text-slate-700'>Finder</span>
           </h1>
         </Link>
 
