@@ -5,7 +5,7 @@ import { FaBath, FaBed } from 'react-icons/fa';
 
 export default function ListingCard({listing}) {
   return (
-    <div className='hover:scale-105 bg-white rounded-lg shadow-lg w-full sm:w-[330px]'>
+    <div className='hover:scale-105 bg-white rounded-lg shadow-lg w-full sm:w-[320px]'>
       <Link to={`/listing/${listing._id}`}>
         <img src={listing.imageUrls[0]} alt="Listing Thumbnail" className='h-[320px] sm:h-[220px] w-full object-cover '/>
         <div className='p-3'>

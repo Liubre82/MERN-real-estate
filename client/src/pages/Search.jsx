@@ -55,6 +55,9 @@ export default function Search() {
                 const searchQuery = urlParams.toString()
                 const res = await fetch(`/api/listing/getList?${searchQuery}`)
                 const data = await res.json()
+                if(data.length > 8) {
+
+                }
                 console.log(data)
                 setListings(data)
                 setLoading(false)
@@ -107,8 +110,9 @@ export default function Search() {
         navigate(`/search?${searchQuery}`)
     }
     return (
-        <div className='flex flex-col sm:flex-row w-full'>
-            <section className='p-7 border-b-2 sm:border-r-2 sm:min-h-screen' >
+        <div className='flex flex-col sm:flex-row max-w-screen-2xl
+        max-width: 1536px; mx-auto mt-5'>
+            <section className='flex p-7 border-b-2 sm:border-r-2 sm:min-h-screen' >
                 <form onSubmit={handleSubmit} className='flex flex-col gap-8 text-lg'>
                     <div className='flex items-center gap-2'>
                         <label htmlFor="searchTerm" className='whitespace-nowrap font-semibold'>Search Term: </label>
