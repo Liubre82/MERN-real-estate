@@ -16,6 +16,7 @@ export default function Search() {
     })
     const [loading, setLoading] = useState(false)
     const [listings, setListings] = useState([])
+    const [showMore, setShowMore] = useState(false)
     const navigate = useNavigate()
 
     //useEffect runs everytime there is a change in location.search/query strings in URL, this function is for when for some reason a user changes a query string in the url.
@@ -52,13 +53,15 @@ export default function Search() {
         const fetchListings = async () => {
             try {
                 setLoading(true)
+                setShowMore(false);
                 const searchQuery = urlParams.toString()
                 const res = await fetch(`/api/listing/getList?${searchQuery}`)
                 const data = await res.json()
-                if(data.length > 8) {
-
+                if (data.length > 8) {
+                    setShowMore(true);
+                } else {
+                    setShowMore(false);
                 }
-                console.log(data)
                 setListings(data)
                 setLoading(false)
             } catch (err) {
@@ -94,6 +97,20 @@ export default function Search() {
 
             setFormData({ ...formData, sort, order })
         }
+    }
+
+    const onShowMoreClick = async () => {
+        const numberOfListings = listings.length
+        const startIndex = numberOfListings
+        const urlParams = new URLSearchParams(location.search)
+        urlParams.set('startIndex', startIndex)
+        const searchQuery = urlParams.toString()
+        const res = await fetch(`/api/listing/getList?${searchQuery}`)
+        const data = await res.json()
+        if (data.length < 9) {
+            setShowMore(false)
+        }
+        setListings([...listings, ...data])
     }
 
     const handleSubmit = (e) => {
@@ -169,9 +186,14 @@ export default function Search() {
                     {!loading && listings && listings.map(listing => (
                         <ListingCard key={uuidv4()} listing={listing} />
                     ))}
+                    {showMore &&
+                        <button onClick={() => onShowMoreClick()} className='text-center w-full hover:underline text-lg text-blue-600'>
+                            Show more listings...
+                        </button>}
                 </div>
 
             </section>
+
         </div>
     )
 }

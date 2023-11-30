@@ -42,7 +42,7 @@ useEffect(() => {
           </button>
         </form>
 
-        <ul className='flex gap-4'>
+        <ul className='flex gap-4 items-center'>
           <Link to='/'>
             <li className='hidden  text-slate-700 sm:inline hover:underline'>Home</li>
           </Link>
