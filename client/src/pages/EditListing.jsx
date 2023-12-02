@@ -30,6 +30,8 @@ export default function EditListing() {
         offer: false,
         userRef: ""
     })
+
+    console.log(params.listingId)
     const [imageUploadError, setImageUploadError] = useState(false)
     //uploading state will determine the text of the upload image button. if images are being uploaded it will display upload..., else it prints a static text saying upload image
     const [uploading, setUploading] = useState(false)

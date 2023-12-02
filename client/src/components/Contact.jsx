@@ -9,7 +9,7 @@ export default function Contact({ listing }) {
     useEffect(() => {
         const getUser = async () => {
             try {
-                const res = await fetch(`/api/user/${listing.userRef}`)
+                const res = await fetch(`/api/user/${listing.userRef._id}`)
                 const data = await res.json()
                 setLandLordUserInfo(data)
             } catch (err) {

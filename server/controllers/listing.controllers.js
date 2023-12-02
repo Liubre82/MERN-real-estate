@@ -60,7 +60,7 @@ export const editListing = async (req, res, next) => {
 export const getListing = async (req, res, next) => {
     try {
         const { listingId } = req.params
-        const findListing = await Listing.findById(listingId)
+        const findListing = await Listing.findById(listingId).populate('userRef')
         if(!findListing) {
             return next(errorHandler(404, 'cannot find listing'))
         }
@@ -105,6 +105,7 @@ export const getSearchListings = async (req, res, next) => {
             name: { $regex: searchTerm, $options: 'i'},
             offer, furnished, parking, type
         })
+        .populate('userRef')
         .sort({[sort]: order})
         .limit(limit)
         .skip(startIndex)

@@ -18,7 +18,7 @@ export default function Footer() {
                 </Link>
 
             </div>
-            {/* copright designer name section */}
+            {/* copright & designer name section */}
             <div className='flex gap-5 items-center md:flex-col'>
                 <span>Copyright &copy;2023</span>
                 <span>Designed by Brent Liu</span>

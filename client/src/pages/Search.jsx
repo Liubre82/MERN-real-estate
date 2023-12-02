@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid';
 import ListingCard from '../components/ListingCard.jsx';
+import CheckBox from '../components/CheckBox.jsx';
 
 export default function Search() {
 
@@ -166,6 +167,7 @@ export default function Search() {
                             <label htmlFor="furnished">Furnished</label>
                         </div>
                     </div>
+
                     <div>
                         <label htmlFor="sort_order">Sort:</label>
                         <select name="sort_order" defaultValue={'created_at_desc'} id="sort_order" onChange={handleChange}>

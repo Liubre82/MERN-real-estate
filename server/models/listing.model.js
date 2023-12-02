@@ -53,10 +53,11 @@ const listingSchema = mongoose.Schema({
         type: []
     },
     userRef: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
         required: true
     }
-}, {timestamps: true})
+}, { timestamps: true })
 
 const Listing = mongoose.model('Listing', listingSchema)
 
