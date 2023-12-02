@@ -64,8 +64,8 @@ export default function Listing() {
         <div>
           {/* navigation allows user to 'slide between the images with arrow buttons */}
           {/* Swiper tag is the images section, displays user uploaded images */}
-          <Swiper navigation>
-            {listing.imageUrls.map((imgUrl, index) => {
+          <Swiper navigation className='max-w-3xl'>
+            {listing.imageUrls.map((imgUrl) => {
               return <SwiperSlide key={uuidv4()}>
                 <div className='h-[550px]' style={{ background: `url(${imgUrl}) center no-repeat`, backgroundSize: 'cover' }}>
 
@@ -90,6 +90,8 @@ export default function Listing() {
               Link copied!
             </p>
           )}
+
+          {/* section to display the listing info */}
           <section className='flex flex-col max-w-3xl mx-auto gap-4 p-3 mt-5'>
             <div>
               <p className='text-2xl font-semibold'>
