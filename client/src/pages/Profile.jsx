@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 export default function Profile() {
-  const { currentUser, loading, error } = useSelector((state) => state.user)
+  const { currentUser, error } = useSelector((state) => state.user)
   const fileRef = useRef(null)
   const [file, setFile] = useState(undefined)
   const [filePerc, setFilePerc] = useState(0)

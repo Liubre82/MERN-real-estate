@@ -21,7 +21,7 @@ export default function Home() {
 
     const fetchOfferListings = async () => {
       try {
-        const res = await fetch('/api/listing/getList?offer=true&limit=4')
+        const res = await fetch('/api/listing/getList?offer=true&limit=3')
         const data = await res.json()
         setOfferListings(data)
         fetchRentListings()
@@ -55,8 +55,8 @@ export default function Home() {
   }, [])
 
   return (
-    <div className=' flex flex-col gap-5'>
-      <section className='flex flex-col gap-6 p-28 px-12 max-w-6xl mx-auto'>
+    <div className=''>
+      <section className='flex flex-col gap-6 p-28 px-12 max-w-screen-2xl mx-auto'>
         <div className=''>
           <h1 className='font-bold font-mono text-5xl'>Find your next favorite <br /> estate with us!!!</h1>
         </div>
@@ -83,7 +83,7 @@ export default function Home() {
           }
         </Swiper>
         {/* display listings of offer, sale, & rent */}
-        <div className='max-w-6xl mx-auto p-3 flex flex-col gap-8 my-10'>
+        <div className='max-w-screen-2xl mx-auto p-3 flex flex-col gap-8 my-10'>
           {offerListings && offerListings.length > 0 && (
             <div>
               <div className='my-5'>
@@ -104,22 +104,9 @@ export default function Home() {
         </div>
 
       </section>
-      <section>
-        {/* Swiper */}
-        <Swiper navigation>
-          {
-            rentListings && rentListings.length > 0 &&
-            rentListings.map(listing => (
-              <SwiperSlide>
-                <div className='h-[500px]' key={uuidv4()} style={{ background: `url(${listing.imageUrls[0]}) center no-repeat`, backgroundSize: "cover" }}>
-
-                </div>
-              </SwiperSlide>
-            ))
-          }
-        </Swiper>
+      <section >
         {/* display listings of offer, sale, & rent */}
-        <div className='max-w-6xl mx-auto p-3 flex flex-col gap-8 my-10'>
+        <div className='max-w-screen-2xl mx-auto p-3 flex flex-col gap-8 my-10'>
           {rentListings && rentListings.length > 0 && (
             <div>
               <div className='my-5'>
@@ -138,11 +125,7 @@ export default function Home() {
             </div>
           )}
         </div>
-
       </section>
-
-
-
     </div>
 
   )

@@ -128,7 +128,7 @@ export default function Search() {
     }
     return (
         <div className='flex flex-col sm:flex-row max-w-screen-2xl
-        max-width: 1536px; mx-auto mt-5'>
+        max-width:1536px; mx-auto mt-5'>
             <section className='flex p-7 border-b-2 sm:border-r-2 sm:min-h-screen' >
                 <form onSubmit={handleSubmit} className='flex flex-col gap-8 text-lg'>
                     <div className='flex items-center gap-2'>
