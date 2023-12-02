@@ -60,7 +60,7 @@ export const editListing = async (req, res, next) => {
 export const getListing = async (req, res, next) => {
     try {
         const { listingId } = req.params
-        const findListing = await Listing.findById(listingId).populate('userRef')
+        const findListing = await Listing.findById(listingId)
         if(!findListing) {
             return next(errorHandler(404, 'cannot find listing'))
         }
@@ -105,7 +105,6 @@ export const getSearchListings = async (req, res, next) => {
             name: { $regex: searchTerm, $options: 'i'},
             offer, furnished, parking, type
         })
-        .populate('userRef')
         .sort({[sort]: order})
         .limit(limit)
         .skip(startIndex)
@@ -119,11 +118,13 @@ export const getSearchListings = async (req, res, next) => {
 export const getAllListings = async (req, res, next) => {
     try {
         console.log('test')
-        const allListings = await Listing.find({}).populate('userRef')
-        console.log(allListings)
+        const allListings = await Listing.find({})
         res.status(200).json(allListings)
 
     } catch(err) {
         next(err)
     }
 }
+
+
+//.populate('userRef', 'username email accountImage')

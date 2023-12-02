@@ -59,6 +59,11 @@ const listingSchema = mongoose.Schema({
     }
 }, { timestamps: true })
 
+
+listingSchema.pre(['find', 'findOne'], function () {
+    // `this` is an instance of mongoose.Query
+    this.populate('userRef', 'username email accountImage')})
+
 const Listing = mongoose.model('Listing', listingSchema)
 
 export default Listing
