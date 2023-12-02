@@ -7,11 +7,13 @@ router.get('/test', test)
 
 router.get('/:userId', verifyToken, getUser)
 
+router.get('/listings/:userId', verifyToken, getUserListing)
+
 router.post('/update/:userId', verifyToken ,updateUser)
 
 router.delete('/delete/:userId', verifyToken, deleteUser)
 
-router.get('/listings/:userId', verifyToken, getUserListing)
+
 
 
 

@@ -73,7 +73,6 @@ export const getUser = async(req, res, next) => {
         if(!findUser) return next(errorHandler(404, 'User not found!'))
         //password is the key to destructure out of findUser, pass is the 'password'->value inside findUser
         const { password: pass, ...otherDetails } = findUser._doc;
-        console.log(otherDetails)
         res.status(200).json(otherDetails)
     } catch(err) {
         next(err)

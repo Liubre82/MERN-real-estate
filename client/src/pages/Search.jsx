@@ -74,7 +74,7 @@ export default function Search() {
         fetchListings()
     }, [location.search])
 
-
+    //changes the filter form based on what the user clicks/chooses
     const handleChange = (e) => {
         if (e.target.id === 'searchTerm') {
             setFormData({ ...formData, [e.target.id]: e.target.value })
@@ -100,6 +100,7 @@ export default function Search() {
         }
     }
 
+    //page initially is limited to showing only 9 listingCards, this function will display 9 more if there are any.
     const onShowMoreClick = async () => {
         const numberOfListings = listings.length
         const startIndex = numberOfListings
@@ -114,6 +115,7 @@ export default function Search() {
         setListings([...listings, ...data])
     }
 
+    //create the queryString to be added to the url to get us the correct 'filter' of the searched params the user selected or didnt select.
     const handleSubmit = (e) => {
         e.preventDefault()
         const urlParams = new URLSearchParams()
@@ -127,47 +129,34 @@ export default function Search() {
         const searchQuery = urlParams.toString()
         navigate(`/search?${searchQuery}`)
     }
+
     return (
         <div className='flex flex-col sm:flex-row max-w-screen-2xl
         max-width:1536px; mx-auto mt-5'>
+            
+            {/* left Section, displays the filter form */}
             <section className='flex p-7 border-b-2 sm:border-r-2 sm:min-h-screen' >
                 <form onSubmit={handleSubmit} className='flex flex-col gap-8 text-lg'>
                     <div className='flex items-center gap-2'>
                         <label htmlFor="searchTerm" className='whitespace-nowrap font-semibold'>Search Term: </label>
                         <input type="text" id='searchTerm' placeholder='Search...' className='border p-3 rounded-lg w-full' onChange={handleChange} value={formData.searchTerm} />
                     </div>
+                    {/* CheckBox section */}
                     <div className='flex gap-3 flex-wrap items-center'>
                         <p>Type: </p>
-                        <div className='flex gap-1 items-center'>
-                            <input type="checkbox" id='all' className='w-5 h-5' onChange={handleChange} checked={formData.type === 'all'} />
-                            <label htmlFor="all">Rent & Sale</label>
-                        </div>
-                        <div className='flex gap-1 items-center'>
-                            <input type="checkbox" id='rent' className='w-5 h-5' onChange={handleChange} checked={formData.type === 'rent'} />
-                            <label htmlFor="rent">Rent</label>
-                        </div>
-                        <div className='flex gap-1 items-center'>
-                            <input type="checkbox" id='sale' className='w-5 h-5' onChange={handleChange} checked={formData.type === 'sale'} />
-                            <label htmlFor="sale">Sale</label>
-                        </div>
-                        <div className='flex gap-1 items-center'>
-                            <input type="checkbox" id='offer' className='w-5 h-5' onChange={handleChange} checked={formData.offer} />
-                            <label htmlFor="offer">Offer</label>
-                        </div>
-
+                        <CheckBox id={'all'} checkBoxToggle={formData.type === 'all'} handleChange={handleChange} name={'Rent & Sale'} />
+                        <CheckBox id={'rent'} checkBoxToggle={formData.type === 'rent'} handleChange={handleChange} name={'Rent'} />
+                        <CheckBox id={'sale'} checkBoxToggle={formData.type === 'sale'} handleChange={handleChange} name={'Sale'} />
+                        <CheckBox id={'offer'} checkBoxToggle={formData.offer} handleChange={handleChange} name={'Offer'} />
                     </div>
                     <div className='flex gap-3 flex-wrap items-center'>
                         <p>Amenities: </p>
-                        <div className='flex gap-1 items-center'>
-                            <input type="checkbox" id='parking' className='w-5 h-5' onChange={handleChange} checked={formData.parking} />
-                            <label htmlFor="parking">Parking</label>
-                        </div>
-                        <div className='flex gap-1 items-center'>
-                            <input type="checkbox" id='furnished' className='w-5 h-5' onChange={handleChange} checked={formData.furnished} />
-                            <label htmlFor="furnished">Furnished</label>
-                        </div>
+                        <CheckBox id={'parking'} checkBoxToggle={formData.parking} handleChange={handleChange} name={'Parking'} />
+
+                        <CheckBox id={'furnished'} checkBoxToggle={formData.furnished} handleChange={handleChange} name={'Furnished'} />
                     </div>
 
+                    {/* dropDown Menu */}
                     <div>
                         <label htmlFor="sort_order">Sort:</label>
                         <select name="sort_order" defaultValue={'created_at_desc'} id="sort_order" onChange={handleChange}>
@@ -180,6 +169,8 @@ export default function Search() {
                     <button className='bg-slate-700 p-3 rounded-lg text-white uppercase font-semibold hover:underline hover:opacity-90'>Search</button>
                 </form>
             </section>
+
+            {/* right section, displays the listings found based off the filter form. */}
             <section className='p-7 flex-1'>
                 <h1 className='font-bold text-3xl border-b-2 text-slate-700'>Listing Results:</h1>
                 <div className='flex flex-wrap mt-5 gap-5'>
@@ -193,7 +184,6 @@ export default function Search() {
                             Show more listings...
                         </button>}
                 </div>
-
             </section>
 
         </div>

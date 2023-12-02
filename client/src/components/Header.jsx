@@ -35,7 +35,7 @@ useEffect(() => {
         </Link>
 
         <form className='bg-slate-100 rounded-lg flex items-center p-3'>
-          <input type="text" placeholder="Search..." className='bg-transparent focus: outline-none w-24 sm:w-64' value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+          <input type="text" placeholder="Search..." className='bg-transparent focus: outline-none w-32 sm:w-40' value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
           <button onClick={handleSubmit}>
             <FaSearch className='text-slate-600 border' />
           </button>
@@ -47,6 +47,9 @@ useEffect(() => {
           </Link>
           <Link to='/about'>
             <li className='hidden  text-slate-700 sm:inline hover:underline'>About</li>
+          </Link>
+          <Link to='/allListings'>
+            <li className='hidden  text-slate-700 sm:inline hover:underline'>All Listings</li>
           </Link>
 
           <Link to='/profile'>

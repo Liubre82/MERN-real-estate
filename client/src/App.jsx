@@ -12,6 +12,7 @@ import EditListing from './pages/EditListing'
 import Listing from './pages/Listing'
 import Search from './pages/Search'
 import Footer from './components/Footer'
+import AllListings from './pages/AllListings'
 
 export default function App() {
   return (
@@ -23,7 +24,9 @@ export default function App() {
         <Route path='/sign-up' element={<SignUp />} />
         <Route path='/about' element={<About />} />
         <Route path='/search' element={<Search />} />
+        <Route path='/allListings' element={<AllListings />}/>
         <Route path='/listing/:listingId' element={<Listing />}/>
+
 
         
         {/* Hides specified routes/pages from the user, only if a user is logged in can they access. */}

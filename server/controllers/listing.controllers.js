@@ -115,3 +115,15 @@ export const getSearchListings = async (req, res, next) => {
         next(err)
     }
 }
+
+export const getAllListings = async (req, res, next) => {
+    try {
+        console.log('test')
+        const allListings = await Listing.find({}).populate('userRef')
+        console.log(allListings)
+        res.status(200).json(allListings)
+
+    } catch(err) {
+        next(err)
+    }
+}

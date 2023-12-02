@@ -65,7 +65,7 @@ Object
       }
 
     }
-    fetchListing()
+    fetchListing(listing)
   }, [params.listingId]) //[]indicates useEffect will run only once, and the data inside means everytime there is a change in the params.listingId in the url, run the useEffect
 
   return (
@@ -78,10 +78,10 @@ Object
         <div>
           {/* navigation allows user to 'slide between the images with arrow buttons */}
           {/* Swiper tag is the images section, displays user uploaded images */}
-          <Swiper navigation className='max-w-3xl'>
+          <Swiper navigation className='max-w-2xl md:max-w-5xl'>
             {listing.imageUrls.map((imgUrl) => {
               return <SwiperSlide key={uuidv4()}>
-                <div className='h-[550px]' style={{ background: `url(${imgUrl}) center no-repeat`, backgroundSize: 'cover' }}>
+                <div className='h-[400px] md:h-[550px]' style={{ background: `url(${imgUrl}) center no-repeat`, backgroundSize: 'cover' }}>
 
                 </div>
               </SwiperSlide>
@@ -109,7 +109,7 @@ Object
               <p className='text-2xl font-semibold'>
                 {listing.name} - ${' '}
                 {listing.offer
-                  ? listing.discountPrice.toLocaleString('en-US')
+                  ? (+listing.regularPrice - +listing.discountPrice).toLocaleString('en-US')
                   : listing.regularPrice.toLocaleString('en-US')}
                 {listing.type === 'rent' && ' / month'}
               </p>
@@ -129,7 +129,7 @@ Object
                 </p>
                 {listing.offer && (
                   <p className='bg-green-900 w-full max-w-[200px] text-white text-center p-2 rounded-md'>
-                    ${+listing.regularPrice - +listing.discountPrice} OFF
+                    ${listing.discountPrice.toLocaleString('en-US')} OFF
                   </p>
                 )}
               </div>

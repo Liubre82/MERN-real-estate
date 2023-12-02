@@ -4,6 +4,7 @@ import { app } from '../firebase'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid';
+import CheckBox from '../components/CheckBox.jsx';
 
 //an array of the filenames that are currently uploaded by the user.
 let filenames = []
@@ -161,6 +162,7 @@ export default function EditListing() {
         }
     }
 
+    //submit the form
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
@@ -198,7 +200,6 @@ export default function EditListing() {
             <form className='flex flex-col sm:flex-row gap-5'>
                 {/* user inputs section */}
                 <section className='flex flex-col gap-4 flex-1'>
-
                     <section className='flex flex-col gap-4'> {/* Text boxes */}
                         <input type="text" placeholder='Name' className='border p-3 rounded-lg' id='name' name='name' maxLength={62} minLength={10} required onChange={handleChange} value={formData.name} />
                         <textarea type="text" placeholder='Description' className='border p-3 rounded-lg' id='description' name='description' required
@@ -206,30 +207,17 @@ export default function EditListing() {
                         <input type="text" placeholder='Address' className='border p-3 rounded-lg' id='address' name='address' required onChange={handleChange} value={formData.address} />
                     </section>
 
-                    <section className='flex gap-6 flex-wrap'>  {/* checkboxes */}
-                        <div className='flex gap-2'>
-                            <input type="checkbox" id='sale' className='w-5' onChange={handleChange} checked={formData.type === 'sale'} />
-                            <label htmlFor="sale">Sell</label>
-                        </div>
-                        <div className='flex gap-2'>
-                            <input type="checkbox" id='rent' className='w-5' onChange={handleChange} checked={formData.type === 'rent'} />
-                            <label htmlFor="rent">Rent</label>
-                        </div>
-                        <div className='flex gap-2'>
-                            <input type="checkbox" id='parking' className='w-5' onChange={handleChange} checked={formData.parking} />
-                            <label htmlFor="parking">Parking Spot</label>
-                        </div>
-                        <div className='flex gap-2'>
-                            <input type="checkbox" id='furnished' className='w-5' onChange={handleChange} checked={formData.furnished} />
-                            <label htmlFor="furnished">Furnished</label>
-                        </div>
-                        <div className='flex gap-2'>
-                            <input type="checkbox" id='offer' className='w-5' onChange={handleChange} checked={formData.offer} />
-                            <label htmlFor="offer">Offer</label>
-                        </div>
+                    {/* checkboxes section */}
+                    <section className='flex gap-6 flex-wrap'>  
+                        <CheckBox id={'sale'} checkBoxToggle={formData.type === 'sale'} handleChange={handleChange} name={'Sell'} />
+                        <CheckBox id={'rent'} checkBoxToggle={formData.type === 'rent'} handleChange={handleChange} name={'Rent'} />
+                        <CheckBox id={'parking'} checkBoxToggle={formData.parking} handleChange={handleChange} name={'Parking Spot'} />
+                        <CheckBox id={'furnished'} checkBoxToggle={formData.furnished} handleChange={handleChange} name={'Furnished'} />
+                        <CheckBox id={'offer'} checkBoxToggle={formData.offer} handleChange={handleChange} name={'Offer'} />
                     </section>
 
-                    <section className='flex flex-wrap gap-6'> {/* Number input boxes section */}
+                    {/* Number input boxes section */}
+                    <section className='flex flex-wrap gap-6'> 
                         <div className='flex gap-2 items-center'>
                             <input className='rounded-lg p-3 border-gray-300 ' type="number" id='bedrooms' min='1' max='10' required onChange={handleChange} value={formData.bedrooms} />
                             <label htmlFor="bedrooms">Beds</label>
@@ -258,7 +246,6 @@ export default function EditListing() {
                         }
 
                     </section>
-
                 </section>
 
                 {/* Image Upload and uploading listing button Section */}
