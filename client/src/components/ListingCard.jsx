@@ -7,7 +7,7 @@ export default function ListingCard({ listing }) {
   return (
     <div className='hover:scale-105 bg-white rounded-lg shadow-lg w-full sm:w-[320px]'>
       <Link to={`/listing/${listing._id}`}>
-        <img src={listing.imageUrls[0]} alt="Listing Thumbnail" className='h-[320px] sm:h-[220px] w-full object-cover ' />
+        <img src={listing.imageUrls[0]} alt="Listing Thumbnail" className='h-[380px] sm:h-[220px] w-full object-cover rounded-t-lg' />
         <div className='p-3'>
           <h1 className='text-xl truncate text-slate-700 font-bold mb-2'>{listing.name}</h1>
           <div className='flex gap-2 items-center mb-2'>

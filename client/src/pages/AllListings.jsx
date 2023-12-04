@@ -6,6 +6,7 @@ export default function AllListings() {
     const [allListings, setAllListings] = useState([])
     const [loading, setLoading] = useState(false)
 
+    //fetches all listings fron the listings collections.
     useEffect(() => {
         const fetchAllListings = async () => {
             try {
@@ -24,7 +25,7 @@ export default function AllListings() {
 
     return (
         <div className='mt-5 p-10 max-w-screen-2xl mx-auto'>
-            <h1 className='text-center font-mono font-bold text-4xl border-b-2 text-slate-700'>All Property Listings</h1>
+            <h1 className='text-center font-mono font-bold text-4xl border-b-2 text-slate-700 mb-10'>All Property Listings</h1>
             {loading && <p className='text-2xl text-center mt-5'>Loading...</p>}
             {!loading && allListings &&
                 <div className='flex flex-wrap gap-5 mt-5 max-w-screen-2xl mx-auto justify-evenly'>
