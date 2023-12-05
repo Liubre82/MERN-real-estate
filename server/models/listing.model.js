@@ -52,6 +52,12 @@ const listingSchema = mongoose.Schema({
     imageNames: {
         type: []
     },
+    reviews: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Review'
+        }
+    ],
     userRef: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
@@ -62,7 +68,11 @@ const listingSchema = mongoose.Schema({
 
 listingSchema.pre(['find', 'findOne'], function () {
     // `this` is an instance of mongoose.Query
-    this.populate('userRef', 'username email accountImage')})
+    this.populate([
+        {path:'userRef', select:'username email accountImage'}, 
+        {path:'reviews', options: { sort: { updatedAt: -1 } }} //sorts reviews array by most recently created review
+    ])
+})
 
 const Listing = mongoose.model('Listing', listingSchema)
 

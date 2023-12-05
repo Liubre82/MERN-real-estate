@@ -1,5 +1,6 @@
 import Listing from '../models/listing.model.js'
 import { errorHandler } from '../utils/error.js'
+import Review from '../models/review.model.js'
 
 
 export const createListing = async (req, res, next) => {
@@ -23,7 +24,7 @@ export const deleteListing = async (req, res, next) => {
     if (!findListing) {
         return next(errorHandler(404, 'Listing is not found.'))
     }
-    if (req.user.id !== findListing.userRef) {
+    if (JSON.stringify(req.user.id) !== JSON.stringify(findListing.userRef._id)) {
         return next(errorHandler(401, 'You can only delete your own listings!'))
     }
     try {
@@ -51,8 +52,8 @@ export const editListing = async (req, res, next) => {
         }
     } else {
         return next(errorHandler(404, 'Listing not found!'));
-    }
-    if (req.user.id !== findListing.userRef) {
+    } 
+    if (JSON.stringify(req.user.id) !== JSON.stringify(findListing.userRef._id)) {
         return next(errorHandler(401, 'You can only update your own listings!'));
     }
 };
@@ -117,7 +118,6 @@ export const getSearchListings = async (req, res, next) => {
 
 export const getAllListings = async (req, res, next) => {
     try {
-        console.log('test')
         const allListings = await Listing.find({})
         res.status(200).json(allListings)
 
@@ -125,6 +125,49 @@ export const getAllListings = async (req, res, next) => {
         next(err)
     }
 }
+
+
+
+export const createReview = async (req, res, next) => {
+    try {    
+        const { listingId } = req.params  
+        const findListing = await Listing.findById(listingId)
+        if(!findListing) {
+            return next(errorHandler(404, 'cannot find listing'))
+        }              
+        const review = new Review(req.body)
+        review.author = req.user.id
+        findListing.reviews.push(review)
+        await review.save()
+        await findListing.save()
+        return res.status(201).json(findListing)
+    } catch(err) {
+        next(err)
+    }
+}
+
+export const deleteReview = async (req, res, next) => {
+    try {  
+        const { listingId, reviewId } = req.params  
+        const findListing = await Listing.findById(listingId)
+        const findReview =  await Review.findById(reviewId)
+        if (!findListing) {
+            return next(errorHandler(404, 'Listing is not found.'))
+        }
+        if (!findReview) {
+            return next(errorHandler(404, 'Review is not found.'))
+        }
+        if (JSON.stringify(req.user.id) !== JSON.stringify(findReview.author)) {
+            return next(errorHandler(401, 'You can only delete your own reviews!'))
+        } 
+        const deleteReviewFromListing = await Listing.findByIdAndUpdate(listingId, { $pull: { reviews: reviewId}})
+        const deleteReview = await Review.findByIdAndDelete(reviewId)
+        res.status(200).json(deleteReview)
+    } catch(err) {
+        next(err)
+    }
+}
+
 
 
 //.populate('userRef', 'username email accountImage')
