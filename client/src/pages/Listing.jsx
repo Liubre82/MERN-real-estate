@@ -290,7 +290,7 @@ Object
                     </div>
 
                     {/*edit & delete button section */}
-                    {review.author === currentUser.currentUser._id &&                     
+                    {review.author._id === currentUser.currentUser._id &&                     
                       <div className='flex items-center gap-5 mt-1'>
                         <button className='flex gap-1 items-center bg-blue-400 text-white p-1 rounded-lg w-20 justify-center hover:underline'><span className=''><FaEdit /></span>edit</button>
                         <button className='flex gap-1 items-center text-white bg-red-600 p-1 rounded-lg w-20 justify-center hover:underline' onClick={() => handleReviewDelete(review._id)}><span className='text-lg'><MdDeleteForever /></span>delete</button>
