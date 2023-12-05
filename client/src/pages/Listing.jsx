@@ -134,6 +134,7 @@ Object
   }
 
   console.log(reviews)
+  console.log('listing:', listing)
 
   return (
 
@@ -171,9 +172,10 @@ Object
           )}
 
           {/* info section, section below the image */}
-          <div className='flex flex-col lg:flex-row max-w-6xl mx-auto mt-5 '>
+          <div className='flex flex-col lg:flex-row  max-w-3xl mx-auto mt-5 lg:max-w-6xl'>
+            
             {/* listing info section*/}
-            <section className='flex flex-col max-w-3xl lg:max-w-2xl gap-4 p-3'>
+            <section className='flex flex-col max-w-3xl lg:max-w-2xl gap-4 p-3 lg:w-4/6'>
               <div>
                 <p className='text-2xl font-semibold'>
                   {listing.name} - ${' '}
@@ -238,18 +240,18 @@ Object
                   (listing.userRef._id !== currentUser.currentUser._id) ?
                     (
                       !contact ?
-                        <button onClick={() => setContact(true)} className='mt-5 bg-slate-700 text-white p-3 rounded-lg uppercase font-medium hover:opacity-90 hover:underline '>Contact Landlord</button>
+                        <button onClick={() => setContact(true)} className='mt-5 bg-slate-700 text-white p-3 rounded-lg font-medium hover:opacity-90 hover:underline '>Contact Landlord</button>
                         :
                         <Contact listing={listing} />
                     )
                     :
-                    <button onClick={() => navigate(`/edit-listing/${listing._id}`)} className='mt-5 bg-green-700 text-white p-3 rounded-lg uppercase font-medium hover:opacity-90 hover:underline '>Edit Your Listing</button>
+                    <button onClick={() => navigate(`/edit-listing/${listing._id}`)} className='mt-5 bg-green-700 text-white p-3 rounded-lg font-medium hover:opacity-90 hover:underline '>Edit Your Listing</button>
                 ) : null
               }
             </section>
 
             {/* review section  */}
-            <section className='p-3 flex flex-col gap-3 max-w-3xl lg:max-w-2xl lg:w-5/12'>
+            <section className='p-3 flex flex-col gap-3 max-w-3xl lg:max-w-2xl lg:w-2/6 my-10'>
               <button className='font-mono font-semibold text-white bg-orange-600 p-3 rounded-lg hover:underline hover:opacity-80' onClick={() => setWriteReview(!writeReview)}>Write a review</button>
 
               {writeReview &&
@@ -265,7 +267,7 @@ Object
                 </form>
 
               }
-              {reviews.length === 0 && <p className='font-mono text-xl'>No reviews</p>}
+              {reviews.length === 0 && <p className='font-mono text-xl text-center'>No reviews</p>}
 
               {/* div that displays all the reviews written for this listing. */}
               <div className='max-h-96 overflow-auto'>

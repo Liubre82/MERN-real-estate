@@ -159,6 +159,8 @@ export default function Profile() {
 
   }
 
+  console.log(userListings)
+
   return (
     <div className='max-w-lg m-auto p-3'>
       <h1 className='text-3xl font-semibold text-center my-7'>Profile</h1>

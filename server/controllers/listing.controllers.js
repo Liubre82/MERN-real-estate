@@ -168,7 +168,3 @@ export const deleteReview = async (req, res, next) => {
         next(err)
     }
 }
-
-
-
-//.populate('userRef', 'username email accountImage')
