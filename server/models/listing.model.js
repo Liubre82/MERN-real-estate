@@ -70,7 +70,8 @@ listingSchema.pre(['find', 'findOne'], function () {
     // `this` is an instance of mongoose.Query
     this.populate([
         {path:'userRef', select:'username email accountImage'}, 
-        {path:'reviews', options: { sort: { updatedAt: -1 } }} //sorts reviews array by most recently created review
+        //sorts reviews array by most recently created review & populate the author field INSIDE the reviews array
+        {path:'reviews', options: { sort: { updatedAt: -1 } }, populate: {path: 'author', select:'username email accountImage'}}, 
     ])
 })
 

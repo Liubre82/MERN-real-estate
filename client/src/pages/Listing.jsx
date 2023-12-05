@@ -250,7 +250,7 @@ Object
 
             {/* review section  */}
             <section className='p-3 flex flex-col gap-3 max-w-3xl lg:max-w-2xl lg:w-5/12'>
-              <button className='font-mono font-semibold text-white bg-green-600 p-3 rounded-lg hover:underline hover:opacity-80' onClick={() => setWriteReview(!writeReview)}>Write a review</button>
+              <button className='font-mono font-semibold text-white bg-orange-600 p-3 rounded-lg hover:underline hover:opacity-80' onClick={() => setWriteReview(!writeReview)}>Write a review</button>
 
               {writeReview &&
                 <form className='flex flex-col gap-3 ' onSubmit={handleSubmit}>
@@ -258,7 +258,7 @@ Object
                     <Rating onClick={handleRating} SVGclassName={'inline-block'}
                       allowFraction={true} SVGstorkeWidth={1}
                       SVGstrokeColor={'#f1a545'} transition={true} />
-                    <button className='p-3 bg-green-600 rounded-lg text-white font-semibold hover:underline hover:opacity-80'>Submit Review</button>
+                    <button className='p-3 bg-orange-600 rounded-lg text-white font-semibold hover:underline hover:opacity-80'>Submit Review</button>
                   </div>
                   <input type="text" id='title' placeholder='write review title...' className=' p-3 rounded-lg' maxLength={60} required onChange={handleChange} value={formData.title} />
                   <textarea id="description" cols="50" rows="2" placeholder='write your review here....' className='p-3 rounded-md' required onChange={handleChange} value={formData.description}></textarea>
@@ -275,8 +275,8 @@ Object
                     <div>
                       <div className='flex gap-3 items-center lg:justify-between'>
                         <div className='flex gap-3 items-center'>
-                          <img className='rounded-full h-8 w-8 object-cover self-center mt-2' src={listing.userRef.accountImage} alt="Profile Image" />
-                          <p className='font-semibold font-mono text-slate-600'>{listing.userRef.username}</p>
+                          <img className='rounded-full h-8 w-8 object-cover self-center mt-2' src={review.author.accountImage} alt="Profile Image" />
+                          <p className='font-semibold font-mono text-slate-600'>{review.author.username}</p>
                         </div>
                         {new Date(review.updatedAt).toLocaleString('en-US', { timeZone: 'America/New_York' })}
                       </div>
