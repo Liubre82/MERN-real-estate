@@ -140,7 +140,8 @@ export const createReview = async (req, res, next) => {
         findListing.reviews.push(review)
         await review.save()
         await findListing.save()
-        return res.status(201).json(findListing)
+        const updatedListing = await Listing.findById(listingId)
+        return res.status(201).json(updatedListing)
     } catch(err) {
         next(err)
     }

@@ -26,7 +26,10 @@ export default function Listing() {
   SwiperCore.use([Navigation])
   const params = useParams()
   const navigate = useNavigate();
+  //stores fetched listing based on the listingId from url
   const [listing, setListing] = useState(null)
+  //stores all the listing reviews in the reviews state
+  const [reviews, setReviews] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
   const [contact, setContact] = useState(false)
@@ -47,42 +50,41 @@ false
 Object
   */
   const [writeReview, setWriteReview] = useState(false)
-  const [reviewChange, setReviewChange] = useState(false)
   const [formData, setFormData] = useState({
     rating: 0,
     description: '',
     title: ''
   })
 
-  //console.log(listing.userRef._id)
-  useEffect(() => {
-    const fetchListing = async () => {
-      try {
-        setReviewChange(false)
-        setFormData({
-          rating: 0,
-          description: '',
-          title: ''
-        })
-        setLoading(true)
-        const res = await fetch(`/api/listing/getList/${params.listingId}`)
-        const data = await res.json()
-        if (data.success === false) {
-          setError(true)
-          setLoading(false)
-          return
-        }
-        setListing(data)
-        setLoading(false)
-        setError(false)
-      } catch (err) {
+  const fetchListing = async () => {
+    try {
+      setFormData({
+        rating: 0,
+        description: '',
+        title: ''
+      })
+      setLoading(true)
+      const res = await fetch(`/api/listing/getList/${params.listingId}`)
+      const data = await res.json()
+      if (data.success === false) {
         setError(true)
         setLoading(false)
+        return
       }
-
+      setListing(data)
+      setReviews(data.reviews)
+      setLoading(false)
+      setError(false)
+    } catch (err) {
+      setError(true)
+      setLoading(false)
     }
+
+  }
+  //console.log(listing.userRef._id)
+  useEffect(() => {
     fetchListing(listing)
-  }, [params.listingId, reviewChange]) //[]indicates useEffect will run only once, and the data inside means everytime there is a change in the params.listingId in the url, run the useEffect
+  }, [params.listingId]) //[]indicates useEffect will run only once, and the data inside means everytime there is a change in the params.listingId in the url, run the useEffect
 
   // Change star-ratingvalue
   const handleRating = (rate) => {
@@ -96,7 +98,7 @@ Object
     })
   }
 
-
+  //posts a review to the reviews collection & adds it to the reviews array in this listing.
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
@@ -109,8 +111,9 @@ Object
       })
       const data = await res.json()
       setWriteReview(false)
-      setReviewChange(true)
+      setReviews(data.reviews)
       console.log(data)
+      console.log(data.reviews)
 
     } catch (err) {
       console.log(err)
@@ -120,16 +123,18 @@ Object
 
   const handleReviewDelete = async (reviewId) => {
     try {
-      setReviewChange(true)
       const res = await fetch(`/api/listing/getList/${listing._id}/deleteReview/${reviewId}`, { method: 'DELETE' })
       const data = await res.json()
       console.log(data)
+      setReviews((prev) => prev.filter(review => review._id !== reviewId))
+
     } catch(err) {
       console.log(err)
     }
   }
 
-  console.log(formData)
+  console.log(reviews)
+
   return (
 
     <main className='mt-10'>
@@ -165,10 +170,10 @@ Object
             </p>
           )}
 
-
-          <div className='flex flex-col lg:flex-row max-w-6xl mx-auto mt-5'>
-            {/* section to display the listing info */}
-            <section className='flex flex-col sm:max-w-4xl gap-4 p-3 '>
+          {/* info section, section below the image */}
+          <div className='flex flex-col lg:flex-row max-w-6xl mx-auto mt-5 '>
+            {/* listing info section*/}
+            <section className='flex flex-col max-w-3xl lg:max-w-2xl gap-4 p-3'>
               <div>
                 <p className='text-2xl font-semibold'>
                   {listing.name} - ${' '}
@@ -198,7 +203,7 @@ Object
                   )}
                 </div>
               </div>
-              <p className='text-slate-800'>
+              <p className='text-slate-800 break-words'>
                 <span className='font-semibold text-black'>Description - </span>
                 {listing.description}
               </p>
@@ -244,7 +249,7 @@ Object
             </section>
 
             {/* review section  */}
-            <section className='p-3 flex flex-col gap-3 sm:max-w-4xl'>
+            <section className='p-3 flex flex-col gap-3 max-w-3xl lg:max-w-2xl lg:w-5/12'>
               <button className='font-mono font-semibold text-white bg-green-600 p-3 rounded-lg hover:underline hover:opacity-80' onClick={() => setWriteReview(!writeReview)}>Write a review</button>
 
               {writeReview &&
@@ -260,15 +265,15 @@ Object
                 </form>
 
               }
+              {reviews.length === 0 && <p className='font-mono text-xl'>No reviews</p>}
 
               {/* div that displays all the reviews written for this listing. */}
               <div className='max-h-96 overflow-auto'>
-
-                {listing.reviews.map(review => (
+                {reviews.map(review => (
                   <div className='flex flex-col justify-center p-3' key={review._id}>
                     {/* review text information display section */}
                     <div>
-                      <div className='flex gap-3 items-center justify-between'>
+                      <div className='flex gap-3 items-center lg:justify-between'>
                         <div className='flex gap-3 items-center'>
                           <img className='rounded-full h-8 w-8 object-cover self-center mt-2' src={listing.userRef.accountImage} alt="Profile Image" />
                           <p className='font-semibold font-mono text-slate-600'>{listing.userRef.username}</p>
