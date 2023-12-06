@@ -161,7 +161,6 @@ export default function Profile() {
 
   }
 
-  console.log(userListings)
 
   return (
     <div className='max-w-lg m-auto p-3'>

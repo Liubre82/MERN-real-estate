@@ -55,8 +55,8 @@ export default function Home() {
 
   return (
     <div>
-      <div className='flex flex-col mt-32 mx-auto items-center gap-10 lg:flex-row justify-center'>
-        <div className='flex flex-col gap-6 px-12'>
+      <div className='flex flex-col mt-32 mx-auto gap-10 lg:flex-row px-14 md:px-28'>
+        <div className='flex flex-col gap-6 '>
           <div>
             <h1 className='font-bold font-mono text-5xl'>Find your next <br /> estate with us!!!</h1>
           </div>

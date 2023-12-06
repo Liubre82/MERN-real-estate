@@ -51,7 +51,7 @@ Object
   */
   const [writeReview, setWriteReview] = useState(false)
   const [formData, setFormData] = useState({
-    rating: 0,
+    rating: 1,
     description: '',
     title: ''
   })
@@ -59,7 +59,7 @@ Object
   const fetchListing = async () => {
     try {
       setFormData({
-        rating: 0,
+        rating: 1,
         description: '',
         title: ''
       })
@@ -91,6 +91,7 @@ Object
     setFormData({ ...formData, rating: rate })
   }
 
+  //change value of review form data on every change
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -113,6 +114,11 @@ Object
       setWriteReview(false)
       setReviews(data.reviews)
       setListing(data)
+      setFormData({
+        rating: 1,
+        description: '',
+        title: ''
+      })
 
     } catch (err) {
       console.log(err)
@@ -120,6 +126,7 @@ Object
 
   }
 
+  //delete review from our states, listing and reviews collection
   const handleReviewDelete = async (reviewId) => {
     try {
       const res = await fetch(`/api/listing/getList/${listing._id}/deleteReview/${reviewId}`, { method: 'DELETE' })
@@ -129,6 +136,16 @@ Object
     } catch(err) {
       console.log(err)
     }
+  }
+
+  const checkUserHasReview = (arr) => {
+    for(let i = 0; i < arr.length; i++) {
+      if(currentUser.currentUser._id === arr[i].author._id) {
+        return true
+      }
+    }
+    return false
+
   }
 
   return (
@@ -147,7 +164,7 @@ Object
             {listing.imageUrls.map((imgUrl) => {
               return <SwiperSlide key={uuidv4()} >
                 <div className='h-[400px] lg:h-auto'>
-                  <img src={imgUrl} alt={imgUrl} className='max-w-5xl object-cover'/>
+                  <img src={imgUrl} alt={imgUrl} className='max-w-5xl object-contain lg:object-cover'/>
                 </div>
                 
               </SwiperSlide>
@@ -256,13 +273,13 @@ Object
             <section className='p-3 flex flex-col gap-3 max-w-3xl lg:max-w-2xl lg:w-2/6 my-10'>
 
               {/* only allow a logged in user to write a review otherwise dont display button */}
-              {currentUser.currentUser && <button className='font-mono font-semibold text-white bg-orange-600 p-3 rounded-lg hover:underline hover:opacity-80' onClick={() => setWriteReview(!writeReview)}>Write a review</button>}
+              {currentUser.currentUser && reviews && !checkUserHasReview(reviews) && <button className='font-mono font-semibold text-white bg-orange-600 p-3 rounded-lg hover:underline hover:opacity-80' onClick={() => setWriteReview(!writeReview)}>Write a review</button>}
 
               {writeReview &&
                 <form className='flex flex-col gap-3 ' onSubmit={handleSubmit}>
                   <div className='flex justify-between'>
                     <Rating onClick={handleRating} SVGclassName={'inline-block'}
-                      allowFraction={true} SVGstorkeWidth={1}
+                      allowFraction={true} SVGstorkeWidth={1} initialValue={formData.rating}
                       SVGstrokeColor={'#f1a545'} transition={true} />
                     <button className='p-3 bg-orange-600 rounded-lg text-white font-semibold hover:underline hover:opacity-80'>Submit Review</button>
                   </div>
@@ -287,7 +304,7 @@ Object
                         {new Date(review.updatedAt).toLocaleString('en-US', { timeZone: 'America/New_York' })}
                       </div>
                       <div className='flex gap-3 items-center font-semibold font-mono'>
-                        <Rating SVGclassName={'inline-block'} readonly={true} initialValue={4.5} allowFraction={true} size={20} SVGstrokeColor={'#f1a545'} SVGstorkeWidth={1} />
+                        <Rating SVGclassName={'inline-block'} readonly={true} initialValue={review.rating} allowFraction={true} size={20} SVGstrokeColor={'#f1a545'} SVGstorkeWidth={1} />
                         <p>{review.title}</p>
                       </div>
                       <div>
@@ -296,7 +313,7 @@ Object
                     </div>
 
                     {/*edit & delete button section */}
-                    {review.author._id === currentUser.currentUser._id &&                     
+                    {currentUser.currentUser && review.author._id === currentUser.currentUser._id &&                    
                       <div className='flex items-center gap-5 mt-1'>
 
                         {/* <button className='flex gap-1 items-center bg-blue-400 text-white p-1 rounded-lg w-20 justify-center hover:underline'><span className=''><FaEdit /></span>edit</button> */}

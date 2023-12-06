@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+
 const listings = [
     {
         imageUrls: ['https://firebasestorage.googleapis.com/v0/b/mern-real-estate-9a14b.appspot.com/o/SeedsImages%2Fpost1(1).jpg?alt=media&token=17f78ca8-3bfd-4900-bba5-48113c4d61fb',
