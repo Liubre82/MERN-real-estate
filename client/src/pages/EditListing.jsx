@@ -110,8 +110,11 @@ export default function EditListing() {
     //function permanently deletes a single image from our firebase storage
     const deleteImageFromFirebase = (index) => {
         const storage = getStorage(app);
+        // filepath of the image in our firebase storage that is to be deleted
+        const listingRef = `${currentUser.username}${currentUser._id}/listings/${formData.imageNames[index]}`
+
         // Create a reference to the file to delete
-        const desertRef = ref(storage, formData.imageNames[index]);
+        const desertRef = ref(storage, listingRef);
         // Delete the file
         deleteObject(desertRef).then(() => {
             console.log("image deleted from firebase")

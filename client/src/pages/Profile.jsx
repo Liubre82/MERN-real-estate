@@ -36,9 +36,11 @@ export default function Profile() {
   //uploads a single image to change the profile pic of current user
   const handleFileUpload = (file) => {
     const storage = getStorage(app);
+    console.log(storage)
     const fileName = new Date().getTime() + file.name;
-    const storageRef = ref(storage, fileName);
-    const uploadTask = uploadBytesResumable(storageRef, file);
+    const storageRef = ref(storage, `${currentUser.username}${currentUser._id}`)
+    const profileRef = ref(storageRef, `profileImages/${fileName}`)
+    const uploadTask = uploadBytesResumable(profileRef, file);
 
     uploadTask.on(
       'state_changed',
@@ -199,8 +201,10 @@ export default function Profile() {
         <span onClick={handleDeleteUser} className='text-red-600 hover:underline cursor-pointer'>Delete Account</span>
         <span onClick={handleSignOut} className='text-red-600 hover:underline cursor-pointer'>Sign Out</span>
       </div>
+
       <p className='text-red-600 mt-5'>{error ? error : ''}</p>
       <p className='text-green-700 mt-5'>{updateSuccess ? 'User is updated successfully!' : ''}</p>
+
       <button onClick={toggleShowListings} className='text-green-700 text-lg font-bold w-full'>Show Listings</button>
       <p className='text-red-700 mt-5'>
         {showListingError ? 'Error showing listings' : ''}

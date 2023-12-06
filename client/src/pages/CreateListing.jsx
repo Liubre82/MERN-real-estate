@@ -43,8 +43,10 @@ export default function CreateListing() {
             const storage = getStorage(app)
             const fileName = new Date().getTime() + file.name
             filenames.push(fileName)
-            const storageRef = ref(storage, fileName)
-            const uploadTask = uploadBytesResumable(storageRef, file)
+            const storageRef = ref(storage, `${currentUser.username}${currentUser._id}`)
+            const listingRef = ref(storageRef, `listings/${fileName}`)
+
+            const uploadTask = uploadBytesResumable(listingRef, file)
             uploadTask.on(
                 "state_changed",
                 (snapshot) => {
@@ -92,8 +94,10 @@ export default function CreateListing() {
     //function permanently deletes a single image from our firebase storage
     const deleteImageFromFirebase = (index) => {
         const storage = getStorage(app);
+        // filepath of the image in our firebase storage that is to be deleted
+        const listingRef = `${currentUser.username}${currentUser._id}/listings/${filenames[index]}`
         // Create a reference to the file to delete
-        const desertRef = ref(storage, filenames[index]);
+        const desertRef = ref(storage, listingRef);
         // Delete the file
         deleteObject(desertRef).then(() => {
             console.log("image deleted from firebase")
