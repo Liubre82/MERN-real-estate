@@ -4,6 +4,8 @@ import { MdLocationOn } from 'react-icons/md'
 import { FaBath, FaBed } from 'react-icons/fa';
 import { IoIosStar } from "react-icons/io";
 import { useState } from 'react'
+
+//calculate the average rating of all the reviews for this paticular listing.
 export default function ListingCard({ listing }) {
   const getAverageRating = (arr) => {
     let sum = 0;
@@ -18,8 +20,6 @@ export default function ListingCard({ listing }) {
     return averageRating
   }
   const [ratingAverage, setRatingAverage] = useState(getAverageRating(listing.reviews))
-
-
 
   return (
     <div className=' hover:scale-105 bg-white rounded-lg shadow-lg w-full sm:w-[320px]'>

@@ -9,32 +9,21 @@ import {
   FaBath,
   FaBed,
   FaChair,
-  FaMapMarkedAlt,
   FaMapMarkerAlt,
   FaParking,
   FaShare,
   FaEdit
 } from 'react-icons/fa';
+import { IoIosStar } from "react-icons/io";
 import { MdDeleteForever } from "react-icons/md";
 import { useSelector } from 'react-redux'
 import { useNavigate } from "react-router-dom";
 import { Rating } from 'react-simple-star-rating'
 import Contact from '../components/Contact.jsx'
 import { Virtual } from 'swiper/modules';
+
 export default function Listing() {
 
-  SwiperCore.use([Navigation])
-  const params = useParams()
-  const navigate = useNavigate();
-  //stores fetched listing based on the listingId from url
-  const [listing, setListing] = useState(null)
-  //stores all the listing reviews in the reviews state
-  const [reviews, setReviews] = useState(null)
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(false)
-  const [contact, setContact] = useState(false)
-  const [copied, setCopied] = useState(false);
-  const currentUser = useSelector(state => state.user)
   /* unknown reason currentUser obj is like this. to access the user info, we need to do currentUser.currentUser 
   {currentUser: {…}, error: null, loading: false}
 currentUser : 
@@ -49,13 +38,43 @@ false
 : 
 Object
   */
+  const currentUser = useSelector(state => state.user)
+  SwiperCore.use([Navigation])
+  const params = useParams()
+  const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(false)
+  const [contact, setContact] = useState(false)
+  const [copied, setCopied] = useState(false);
   const [writeReview, setWriteReview] = useState(false)
+  
+  //stores fetched listing based on the listingId from url
+  const [listing, setListing] = useState(null)
+  //stores all the listing reviews in the reviews state
+  const [reviews, setReviews] = useState(null)
   const [formData, setFormData] = useState({
     rating: 1,
     description: '',
     title: ''
   })
+  const [ratingAverage, setRatingAverage] = useState(null)
 
+  //calculate the average rating of all the reviews for this paticular listing.
+  const getAverageRating = (arr) => {
+    let sum = 0;
+    if (arr.length === 0) {
+      return 'No Rating'
+    }
+    for (let i = 0; i < arr.length; i++) {
+      sum += arr[i].rating
+    }
+
+    const averageRating = (sum / arr.length).toFixed(2)
+    return averageRating
+  }
+
+  //get the listing doc from the collection based on the listingId in the params
   const fetchListing = async () => {
     try {
       setFormData({
@@ -73,6 +92,7 @@ Object
       }
       setListing(data)
       setReviews(data.reviews)
+      setRatingAverage(getAverageRating(data.reviews))
       setLoading(false)
       setError(false)
     } catch (err) {
@@ -81,7 +101,17 @@ Object
     }
 
   }
-  //console.log(listing.userRef._id)
+
+  //checks to see if User has posted a review or not.
+  const checkUserHasReview = (arr) => {
+    for (let i = 0; i < arr.length; i++) {
+      if (currentUser.currentUser._id === arr[i].author._id) {
+        return true
+      }
+    }
+    return false
+  }
+
   useEffect(() => {
     fetchListing(listing)
   }, [params.listingId]) //[]indicates useEffect will run only once, and the data inside means everytime there is a change in the params.listingId in the url, run the useEffect
@@ -133,19 +163,9 @@ Object
       const data = await res.json()
       console.log(data)
       setReviews((prev) => prev.filter(review => review._id !== reviewId))
-    } catch(err) {
+    } catch (err) {
       console.log(err)
     }
-  }
-
-  const checkUserHasReview = (arr) => {
-    for(let i = 0; i < arr.length; i++) {
-      if(currentUser.currentUser._id === arr[i].author._id) {
-        return true
-      }
-    }
-    return false
-
   }
 
   return (
@@ -159,17 +179,17 @@ Object
           {/* navigation allows user to 'slide between the images with arrow buttons */}
           {/* Swiper tag is the images section, displays user uploaded images */}
 
-          <div className='max-w-3xl md:max-w-5xl mx-atuo flex items-center'>          
+          <div className='max-w-3xl md:max-w-5xl mx-atuo flex items-center'>
             <Swiper navigation modules={[Virtual]}>
-            {listing.imageUrls.map((imgUrl) => {
-              return <SwiperSlide key={uuidv4()} >
-                <div className='h-[400px] lg:h-auto'>
-                  <img src={imgUrl} alt={imgUrl} className='max-w-5xl object-contain lg:object-cover'/>
-                </div>
-                
-              </SwiperSlide>
-            })}
-          </Swiper>
+              {listing.imageUrls.map((imgUrl) => {
+                return <SwiperSlide key={uuidv4()} >
+                  <div className='h-[400px] lg:h-auto'>
+                    <img src={imgUrl} alt={imgUrl} className='max-w-5xl object-contain lg:object-cover' />
+                  </div>
+
+                </SwiperSlide>
+              })}
+            </Swiper>
 
           </div>
 
@@ -192,7 +212,7 @@ Object
 
           {/* info section, section below the image */}
           <div className='flex flex-col lg:flex-row  max-w-3xl mx-auto mt-5 lg:max-w-6xl'>
-            
+
             {/* listing info section*/}
             <section className='flex flex-col max-w-3xl lg:max-w-2xl gap-4 p-3 lg:w-4/6'>
               <div>
@@ -288,7 +308,11 @@ Object
                 </form>
 
               }
-              {reviews.length === 0 ? <p className='font-mono text-xl text-center'>No reviews</p> :  <p className='font-mono text-2xl p-3 font-bold'>User Reviews</p>}
+              <div className='flex gap-5 items-center lg:justify-between'>
+                {reviews.length === 0 ? <p className='font-mono text-xl text-center'>No reviews</p> : <p className='font-mono text-2xl p-3 font-bold'>User Reviews</p>}
+                {<div className='text-xl flex gap-1 items-center text-yellow-500 font-bold'><IoIosStar /> {ratingAverage}</div>}
+              </div>
+
 
               {/* div that displays all the reviews written for this listing. */}
               <div className='max-h-96 overflow-auto'>
@@ -313,11 +337,11 @@ Object
                     </div>
 
                     {/*edit & delete button section */}
-                    {currentUser.currentUser && review.author._id === currentUser.currentUser._id &&                    
+                    {currentUser.currentUser && review.author._id === currentUser.currentUser._id &&
                       <div className='flex items-center gap-5 mt-1'>
 
                         {/* <button className='flex gap-1 items-center bg-blue-400 text-white p-1 rounded-lg w-20 justify-center hover:underline'><span className=''><FaEdit /></span>edit</button> */}
-                        
+
                         <button className='flex gap-1 items-center text-white bg-red-600 p-1 rounded-lg w-20 justify-center hover:underline' onClick={() => handleReviewDelete(review._id)}><span className='text-lg'><MdDeleteForever /></span>delete</button>
                       </div>
                     }
