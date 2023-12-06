@@ -135,7 +135,7 @@ export default function Search() {
         max-width:1536px; mx-auto mt-5'>
             
             {/* left Section, displays the filter form */}
-            <section className='flex p-7 border-b-2 sm:border-r-2 sm:min-h-screen' >
+            <section className='flex p-7 sm:border-r-2 sm:min-h-screen' >
                 <form onSubmit={handleSubmit} className='flex flex-col gap-8 text-lg'>
                     <div className='flex items-center gap-2'>
                         <label htmlFor="searchTerm" className='whitespace-nowrap font-semibold'>Search Term: </label>

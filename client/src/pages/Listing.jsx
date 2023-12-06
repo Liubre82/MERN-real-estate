@@ -20,7 +20,7 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from "react-router-dom";
 import { Rating } from 'react-simple-star-rating'
 import Contact from '../components/Contact.jsx'
-
+import { Virtual } from 'swiper/modules';
 export default function Listing() {
 
   SwiperCore.use([Navigation])
@@ -112,8 +112,7 @@ Object
       const data = await res.json()
       setWriteReview(false)
       setReviews(data.reviews)
-      console.log(data)
-      console.log(data.reviews)
+      setListing(data)
 
     } catch (err) {
       console.log(err)
@@ -127,14 +126,10 @@ Object
       const data = await res.json()
       console.log(data)
       setReviews((prev) => prev.filter(review => review._id !== reviewId))
-
     } catch(err) {
       console.log(err)
     }
   }
-
-  console.log(reviews)
-  console.log('listing:', listing)
 
   return (
 
@@ -143,18 +138,25 @@ Object
       {error && <p className='text-center my-5 text-2xl'>Something Went Wrong</p>}
 
       {listing && !loading && !error &&
-        <div>
+        <div className='max-w-3xl mx-auto mt-5 lg:max-w-6xl'>
           {/* navigation allows user to 'slide between the images with arrow buttons */}
           {/* Swiper tag is the images section, displays user uploaded images */}
-          <Swiper navigation className='max-w-3xl md:max-w-6xl'>
-            {listing.imageUrls.map((imgUrl) => {
-              return <SwiperSlide key={uuidv4()}>
-                <div className='h-[500px] md:h-[550px]' style={{ background: `url(${imgUrl}) center no-repeat`, backgroundSize: 'cover' }}>
 
+          <div className='max-w-3xl md:max-w-5xl mx-atuo flex items-center'>          
+            <Swiper navigation modules={[Virtual]}>
+            {listing.imageUrls.map((imgUrl) => {
+              return <SwiperSlide key={uuidv4()} >
+                <div className='h-[400px] lg:h-auto'>
+                  <img src={imgUrl} alt={imgUrl} className='max-w-5xl object-cover'/>
                 </div>
+                
               </SwiperSlide>
             })}
           </Swiper>
+
+          </div>
+
+
           <div className='fixed top-[13%] right-[3%] z-10 border rounded-full w-12 h-12 flex justify-center items-center bg-slate-100 cursor-pointer'
             onClick={() => {
               navigator.clipboard.writeText(window.location.href);
@@ -252,7 +254,9 @@ Object
 
             {/* review section  */}
             <section className='p-3 flex flex-col gap-3 max-w-3xl lg:max-w-2xl lg:w-2/6 my-10'>
-              <button className='font-mono font-semibold text-white bg-orange-600 p-3 rounded-lg hover:underline hover:opacity-80' onClick={() => setWriteReview(!writeReview)}>Write a review</button>
+
+              {/* only allow a logged in user to write a review otherwise dont display button */}
+              {currentUser.currentUser && <button className='font-mono font-semibold text-white bg-orange-600 p-3 rounded-lg hover:underline hover:opacity-80' onClick={() => setWriteReview(!writeReview)}>Write a review</button>}
 
               {writeReview &&
                 <form className='flex flex-col gap-3 ' onSubmit={handleSubmit}>
@@ -294,7 +298,9 @@ Object
                     {/*edit & delete button section */}
                     {review.author._id === currentUser.currentUser._id &&                     
                       <div className='flex items-center gap-5 mt-1'>
-                        <button className='flex gap-1 items-center bg-blue-400 text-white p-1 rounded-lg w-20 justify-center hover:underline'><span className=''><FaEdit /></span>edit</button>
+
+                        {/* <button className='flex gap-1 items-center bg-blue-400 text-white p-1 rounded-lg w-20 justify-center hover:underline'><span className=''><FaEdit /></span>edit</button> */}
+                        
                         <button className='flex gap-1 items-center text-white bg-red-600 p-1 rounded-lg w-20 justify-center hover:underline' onClick={() => handleReviewDelete(review._id)}><span className='text-lg'><MdDeleteForever /></span>delete</button>
                       </div>
                     }

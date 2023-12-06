@@ -2,12 +2,33 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { MdLocationOn } from 'react-icons/md'
 import { FaBath, FaBed } from 'react-icons/fa';
-
+import { IoIosStar } from "react-icons/io";
+import { useState } from 'react'
 export default function ListingCard({ listing }) {
+  const getAverageRating = (arr) => {
+    let sum = 0;
+    if(arr.length === 0) {
+      return 'No Rating'
+    }
+    for(let i = 0; i < arr.length; i++) {
+      sum += arr[i].rating
+    }
+    return sum / arr.length
+  }
+  const [ratingAverage, setRatingAverage] = useState(getAverageRating(listing.reviews))
+
+
+
   return (
-    <div className='hover:scale-105 bg-white rounded-lg shadow-lg w-full sm:w-[320px]'>
+    <div className=' hover:scale-105 bg-white rounded-lg shadow-lg w-full sm:w-[320px]'>
       <Link to={`/listing/${listing._id}`}>
-        <img src={listing.imageUrls[0]} alt="Listing Thumbnail" className='h-[380px] sm:h-[220px] w-full object-cover rounded-t-lg' />
+        <div className='relative'>
+        <img src={listing.imageUrls[0]} alt="Listing Thumbnail" className='relative h-[380px] sm:h-[220px] w-full object-cover rounded-t-lg' />
+        <div className='bg-slate-200 rounded-lg absolute top-2.5 right-2.5 px-1 flex gap-1 items-center text-orange-500 font-semibold'><IoIosStar /> {ratingAverage}</div>
+        </div>
+
+
+
         <div className='p-3'>
           <h1 className='text-xl truncate text-slate-700 font-bold mb-2'>{listing.name}</h1>
           <div className='flex gap-2 items-center mb-2'>
