@@ -13,7 +13,9 @@ export default function ListingCard({ listing }) {
     for(let i = 0; i < arr.length; i++) {
       sum += arr[i].rating
     }
-    return sum / arr.length
+
+    const averageRating = (sum / arr.length).toFixed(2)
+    return averageRating
   }
   const [ratingAverage, setRatingAverage] = useState(getAverageRating(listing.reviews))
 

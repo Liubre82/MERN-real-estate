@@ -38,7 +38,6 @@ export default function SignUp() {
       }
       setLoading(false) //post request is successful, end the loading by setting it false.
       setError(null) 
-      console.log("navigate")
       navigate('/sign-in')
     } catch(err) {
       setError(err.message)

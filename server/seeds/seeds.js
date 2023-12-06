@@ -1,6 +1,4 @@
 import mongoose from 'mongoose'
-import fetch from 'node-fetch';
-
 import Review from '../models/review.model.js'
 import listings from './Listings.js'
 import reviews from './reviews.js'
@@ -18,7 +16,7 @@ mongoose.connect(process.env.mongodbConnect).then(() => {
 //retrieves a random element from an array
 const randomElement = arr => arr[Math.floor(Math.random() * arr.length)]
 
-//creates a certain number of reviews based on how many unique authors are passed in as args. and saves it to the reviews collection
+//creates a certain number of reviews based on how many unique authors are passed in as args. and saves it to the reviews collection. returns an array of reviews of length authorId
 const createReviews = async (...authorId) => {
     const reviewsArr = []
     for(let i = 0; i < authorId.length; i++) {
@@ -27,30 +25,22 @@ const createReviews = async (...authorId) => {
         reviewsArr.push(review)
     }
     return reviewsArr
-    
 }
 
-
-
-
+//CLEARS our listing and reviews collection, THEN inserts inital data to our database so our website has data to use to display listings.
 const seedDb = async () => {
+
     await Listing.deleteMany({})
     await Review.deleteMany({})
+
     for (let i = 0; i < listings.length; i++) {
-
-        //const review = new Review({...randomElement(reviews), author: "65603f2e3739a6fb33d25ea2"})
-
-        const reviews = await createReviews("65603f2e3739a6fb33d25ea2", "65603f653739a6fb33d25ea4", "657020d95462f62d6b917356")
-
+        const reviews = await createReviews("65603f2e3739a6fb33d25ea2", "65603f653739a6fb33d25ea4", "657020d95462f62d6b917356", "657027e70107280ef06ab28c")
         const listing = new Listing({...listings[i], reviews})
         await listing.save()
-        
     }
-
 }
 
-
-seedDb().then((data) => {
+seedDb().then(() => {
     console.log("Initial Listings added!"),
         mongoose.connection.close();
 })

@@ -288,7 +288,7 @@ Object
                 </form>
 
               }
-              {reviews.length === 0 && <p className='font-mono text-xl text-center'>No reviews</p>}
+              {reviews.length === 0 ? <p className='font-mono text-xl text-center'>No reviews</p> :  <p className='font-mono text-2xl p-3 font-bold'>User Reviews</p>}
 
               {/* div that displays all the reviews written for this listing. */}
               <div className='max-h-96 overflow-auto'>

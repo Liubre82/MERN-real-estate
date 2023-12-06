@@ -74,7 +74,7 @@ export default function Home() {
 
 
       <div className='w-full lg:max-w-screen-2xl mx-auto'>
-      <Swiper modules={[Virtual]} className='mt-20'>
+      <Swiper navigation modules={[Virtual]} className='mt-20'>
         {
           offerListings && offerListings.length > 0 &&
           offerListings.map(listing => (
