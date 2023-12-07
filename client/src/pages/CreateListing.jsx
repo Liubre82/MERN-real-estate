@@ -106,7 +106,7 @@ export default function CreateListing() {
         });
     }
 
-    //
+    //delete a single image from firebase & delete imageUrl from our form data so it doesnt get submitted to our db.
     const handleImageDelete = (index) => {
         setFormData({
             ...formData,
@@ -179,6 +179,7 @@ export default function CreateListing() {
         }
 
     }
+
     return (
         <main className='p-3 max-w-4xl mx-auto'>
             <h1 className='text-3xl font-semibold text-center my-7'>Create a Listing</h1>
@@ -233,7 +234,6 @@ export default function CreateListing() {
                         }
 
                     </section>
-
                 </section>
 
                 {/* Image Upload and uploading listing button Section */}

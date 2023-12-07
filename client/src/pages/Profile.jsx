@@ -92,6 +92,7 @@ export default function Profile() {
 
   }
 
+  //delete the user from our db, logs out the user & delete all listing uploads by the user from our firebase.
   const handleDeleteUser = async (event) => {
     try {
       const UserId = currentUser._id
@@ -111,6 +112,7 @@ export default function Profile() {
     }
   }
 
+  //delete all listings from our db, & listing uploads from our firebase.
   const deleteAllListings = async (UserId) => {
     try {
       const res2 = await fetch(`/api/user/listings/${currentUser._id}`)
@@ -130,6 +132,7 @@ export default function Profile() {
     }
   }
 
+  //clears user cookie & signs the user out
   const handleSignOut = async () => {
     try {
       dispatch(signOutUserStart())
@@ -275,7 +278,6 @@ export default function Profile() {
             </div>
           ))}
         </div>
-
       }
     </div>
 

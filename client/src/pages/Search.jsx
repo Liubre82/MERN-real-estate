@@ -137,10 +137,13 @@ export default function Search() {
             {/* left Section, displays the filter form */}
             <section className='flex p-7 sm:border-r-2 sm:min-h-screen' >
                 <form onSubmit={handleSubmit} className='flex flex-col gap-8 text-lg'>
+
+                    {/* search input box section */}
                     <div className='flex items-center gap-2'>
                         <label htmlFor="searchTerm" className='whitespace-nowrap font-semibold'>Search Term: </label>
                         <input type="text" id='searchTerm' placeholder='Search...' className='border p-3 rounded-lg w-full' onChange={handleChange} value={formData.searchTerm} />
                     </div>
+                    
                     {/* CheckBox section */}
                     <div className='flex gap-3 flex-wrap items-center'>
                         <p>Type: </p>

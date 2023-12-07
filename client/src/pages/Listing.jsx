@@ -227,8 +227,9 @@ Object
       {listing && !loading && !error &&
         <div className='max-w-3xl mx-auto mt-5 lg:max-w-6xl'>
 
-          {/* navigation allows user to 'slide between the images with arrow buttons */}
-          {/* Swiper tag is the images section, displays user uploaded images */}
+          {/* navigation allows user to 'slide between the images with arrow buttons 
+          - Swiper tag is the images section, displays user uploaded images 
+          */}
           <div className='max-w-3xl md:max-w-5xl mx-atuo flex items-center'>
             <Swiper navigation modules={[Virtual]}>
               {listing.imageUrls.map((imgUrl) => {
@@ -241,24 +242,27 @@ Object
             </Swiper>
           </div>
 
-
-          <div className='fixed top-[13%] right-[3%] z-10 border rounded-full w-12 h-12 flex justify-center items-center bg-slate-100 cursor-pointer'
-            onClick={() => {
-              navigator.clipboard.writeText(window.location.href);
-              setCopied(true);
-              setTimeout(() => {
-                setCopied(false);
-              }, 2000);
-            }}>
-            <FaShare className='text-slate-500' />
+          {/* A clickable icon that copies the current pages url. */}
+          <div>
+            <div className='fixed top-[13%] right-[3%] z-10 border rounded-full w-12 h-12 flex justify-center items-center bg-slate-100 cursor-pointer'
+              onClick={() => {
+                navigator.clipboard.writeText(window.location.href);
+                setCopied(true);
+                setTimeout(() => {
+                  setCopied(false);
+                }, 2000);
+              }}>
+              <FaShare className='text-slate-500' />
+            </div>
+            {copied && (
+              <p className='fixed top-[23%] right-[5%] z-10 rounded-md bg-slate-100 p-2'>
+                Link copied!
+              </p>
+            )}
           </div>
-          {copied && (
-            <p className='fixed top-[23%] right-[5%] z-10 rounded-md bg-slate-100 p-2'>
-              Link copied!
-            </p>
-          )}
 
-          {/* info section, section below the image */}
+
+          {/* listing info & reviews section, the section below the image */}
           <div className='flex flex-col lg:flex-row  max-w-3xl mx-auto mt-5 lg:max-w-6xl'>
 
             {/* listing info section*/}
@@ -273,7 +277,7 @@ Object
                 </p>
                 <div className='flex items-center mt-6 gap-10'>
                   <p className='font-semibold flex gap-2 items-center text-lg'>
-                  <img className='rounded-full h-12 w-12 object-cover self-center mt-2' src={listing.userRef.accountImage} alt="Profile Image" />
+                    <img className='rounded-full h-12 w-12 object-cover self-center mt-2' src={listing.userRef.accountImage} alt="Profile Image" />
                     Posted By: {listing.userRef.username}
                   </p>
                   <p className='flex items-center gap-2 text-slate-600 text-sm'>
@@ -338,7 +342,7 @@ Object
               }
             </section>
 
-            {/* review section  */}
+            {/* reviews section  */}
             <section className='p-3 flex flex-col gap-3 max-w-3xl lg:max-w-2xl lg:w-2/6 my-10'>
 
               {/* only allow a logged in user, & a user that did not post the listing to write a review otherwise dont display button aka cant post review */}
@@ -375,15 +379,14 @@ Object
                 </form>
               }
 
+              {/* reviews Header text section */}
               <div className='flex gap-5 items-center lg:justify-between'>
                 {reviews.length === 0 ? <p className='font-mono text-xl text-center'>No reviews</p> : <p className='font-mono text-2xl p-3 font-bold'>User Reviews</p>}
                 {<div className='text-xl flex gap-1 items-center text-orange-500 font-bold'><IoIosStar /> {ratingAverage}</div>}
               </div>
 
-
               {/* div that displays all the reviews posted on this listing. */}
               <div className='max-h-96 overflow-auto'>
-
                 {reviews.map(review => (
                   <div className='flex flex-col justify-center p-3' key={review._id}>
                     {/* review text information display section */}
@@ -412,9 +415,10 @@ Object
                     }
 
                   </div>
-                  
+
                 ))}
               </div>
+
             </section>
           </div>
 

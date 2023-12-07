@@ -123,7 +123,7 @@ export default function EditListing() {
         });
     }
 
-    //
+    //removes the image information from our formData & delete the image from our firebase.
     const handleImageDelete = (index) => {
         setFormData({
             ...formData,
@@ -164,7 +164,7 @@ export default function EditListing() {
         }
     }
 
-    //submit the form
+    //submit the form & route to the listing that was editted after.
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
@@ -196,13 +196,17 @@ export default function EditListing() {
         }
 
     }
+
     return (
         <main className='p-3 max-w-4xl mx-auto'>
             <h1 className='text-3xl font-semibold text-center my-7'>Edit Listing</h1>
             <form className='flex flex-col sm:flex-row gap-5'>
+
                 {/* user inputs section */}
                 <section className='flex flex-col gap-4 flex-1'>
-                    <section className='flex flex-col gap-4'> {/* Text boxes */}
+
+                    {/* Text boxes */}
+                    <section className='flex flex-col gap-4'> 
                         <input type="text" placeholder='Name' className='border p-3 rounded-lg' id='name' name='name' maxLength={62} minLength={10} required onChange={handleChange} value={formData.name} />
                         <textarea type="text" placeholder='Description' className='border p-3 rounded-lg' id='description' name='description' required
                             onChange={handleChange} value={formData.description} />
@@ -248,6 +252,7 @@ export default function EditListing() {
                         }
 
                     </section>
+                    
                 </section>
 
                 {/* Image Upload and uploading listing button Section */}
@@ -280,8 +285,8 @@ export default function EditListing() {
                     </button>
                     {error && <p className='text-red-700 text-sm font-bold'>{error}</p>}
                 </section>
-            </form>
 
+            </form>
         </main>
     )
 }
