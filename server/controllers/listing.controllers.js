@@ -3,6 +3,7 @@ import { errorHandler } from '../utils/error.js'
 import Review from '../models/review.model.js'
 
 
+//create a new listing to the listings collection, returns the newly created listing obj
 export const createListing = async (req, res, next) => {
     try {
         //create a new document and insert it into the database in one step, .save() is not needed
@@ -17,6 +18,7 @@ export const createListing = async (req, res, next) => {
 
 // for some odd reason insomnia does not run the error handler when the listing id cannot be found and it crashes our server when the id param in the url is not valid
 
+//delete specified listing and returns the listing obj that was deleted.
 export const deleteListing = async (req, res, next) => {
     const { listingId } = req.params
     const findListing = await Listing.findById(listingId)
@@ -35,6 +37,7 @@ export const deleteListing = async (req, res, next) => {
     }
 }
 
+//edit a specific existing listing, return the editted/updated listing obj
 export const editListing = async (req, res, next) => {
     const { listingId } = req.params
     const findListing = await Listing.findById(listingId);
@@ -58,6 +61,7 @@ export const editListing = async (req, res, next) => {
     }
 };
 
+//returns a unique/specific listing from the listings collection
 export const getListing = async (req, res, next) => {
     try {
         const { listingId } = req.params
@@ -71,6 +75,7 @@ export const getListing = async (req, res, next) => {
     }
 }
 
+//return listings based on the queryStrings/filtered listings
 export const getSearchListings = async (req, res, next) => {
     //The $in operator selects the documents where the value of a field equals any value in the specified array.
     try {
@@ -116,6 +121,7 @@ export const getSearchListings = async (req, res, next) => {
     }
 }
 
+//get all listings that were posted from all users.(retrieves entire listings collection) returns an array of all the listing objs
 export const getAllListings = async (req, res, next) => {
     try {
         const allListings = await Listing.find({})
@@ -126,8 +132,7 @@ export const getAllListings = async (req, res, next) => {
     }
 }
 
-
-
+//create a new review to the reviews collection of a specific listing, & add the review to the listing.reviews array. returns an array of 2 objs. [{Listing obj with the newly created review added}, {newly created review obj}]
 export const createReview = async (req, res, next) => {
     try {    
         const { listingId } = req.params  
@@ -147,6 +152,7 @@ export const createReview = async (req, res, next) => {
     }
 }
 
+//delete a specific review from the listings.reviews array and the reviews collection. returns the review obj that was deleted.
 export const deleteReview = async (req, res, next) => {
     try {  
         const { listingId, reviewId } = req.params  
@@ -169,6 +175,7 @@ export const deleteReview = async (req, res, next) => {
     }
 }
 
+//update/edit the review obj in the reviews collection, and returns an array of 2 objs. [{Listing obj with the review updated}, {newly updated review obj that was updated}]
 export const editReview = async (req, res, next) => {
     try {
         const { listingId, reviewId } = req.params  

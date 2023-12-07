@@ -49,7 +49,7 @@ Object
   const [copied, setCopied] = useState(false);
   const [writeReview, setWriteReview] = useState(false)
   const [editReview, setEditReview] = useState(false)
-  
+
   //stores fetched listing based on the listingId from url
   const [listing, setListing] = useState(null)
   //stores all the listing reviews in the reviews state
@@ -93,18 +93,17 @@ Object
         setLoading(false)
         return
       }
-      console.log("fetchListing:",data)
       setListing(data)
       setReviews(data.reviews)
 
-      if(currentUser.currentUser) {
-      //checks if user has a written a review or not.
-      for(let i = 0; i < data.reviews.length; i++) {
-        if(data.reviews[i].author._id === currentUser.currentUser._id) {
-          setEditFormData(data.reviews[i])
-          break
+      if (currentUser.currentUser) {
+        //checks if user has a written a review or not.
+        for (let i = 0; i < data.reviews.length; i++) {
+          if (data.reviews[i].author._id === currentUser.currentUser._id) {
+            setEditFormData(data.reviews[i])
+            break
+          }
         }
-      }
       }
 
       setRatingAverage(getAverageRating(data.reviews))
@@ -127,6 +126,7 @@ Object
     return false
   }
 
+  //everytime there is a new listingId in the url, run the fetchListing function to retrieve 'that' listing
   useEffect(() => {
     fetchListing(listing)
   }, [params.listingId]) //[]indicates useEffect will run only once, and the data inside means everytime there is a change in the params.listingId in the url, run the useEffect
@@ -136,10 +136,10 @@ Object
     setFormData({ ...formData, rating: rate })
   }
 
-    // Change star-rating value for edit review form
-    const handleEditRating = (rate) => {
-      setEditFormData({ ...editFormData, rating: rate })
-    }
+  // Change star-rating value for edit review form
+  const handleEditRating = (rate) => {
+    setEditFormData({ ...editFormData, rating: rate })
+  }
 
   //change value of review form data on every change
   const handleChange = (e) => {
@@ -153,6 +153,7 @@ Object
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
+      //returns an array of 2 objs, 1st obj is the updated Listing doc with the added review, & 2nd obj is the newly created review doc the user just submitted.
       const res = await fetch(`/api/listing/getList/${listing._id}/createReview`, {
         method: 'POST',
         headers: {
@@ -161,14 +162,11 @@ Object
         body: JSON.stringify(formData)
       })
       const data = await res.json()
-      console.log(data)
       setWriteReview(false)
       setReviews(data[0].reviews)
       setListing(data[0])
       setRatingAverage(getAverageRating(data[0].reviews))
-      setCurrentUserReview(data[1])
-      console.log(data[1])
-      setEditFormData(formData)
+      setEditFormData(data[1])
       setFormData({
         rating: 1,
         description: '',
@@ -185,9 +183,7 @@ Object
     try {
       const res = await fetch(`/api/listing/getList/${listing._id}/deleteReview/${reviewId}`, { method: 'DELETE' })
       const data = await res.json()
-      console.log(data)
       setEditReview(false)
-      console.log("delete:", data.reviews)
       setRatingAverage(getAverageRating(data.reviews))
       setReviews((prev) => prev.filter(review => review._id !== reviewId))
     } catch (err) {
@@ -195,35 +191,34 @@ Object
     }
   }
 
-    //change value of edit review form data on every change
-    const handleEditChange = (e) => {
-      setEditFormData({
-        ...editFormData,
-        [e.target.id]: e.target.value
+  //change value of edit review form data on every change
+  const handleEditChange = (e) => {
+    setEditFormData({
+      ...editFormData,
+      [e.target.id]: e.target.value
+    })
+  }
+
+  //update users review.
+  const handleEditSubmit = async (e) => {
+    e.preventDefault()
+    try {
+      const res = await fetch(`/api/listing/getList/${listing._id}/getReview/${editFormData._id}/editReview`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(editFormData)
       })
+      const data = await res.json()
+      setReviews(data[0].reviews)
+      setRatingAverage(getAverageRating(data[0].reviews))
+      setEditReview(false)
+    } catch (err) {
+      console.log(err)
     }
-  
-    //update users review.
-    const handleEditSubmit = async (e) => {
-      e.preventDefault()
-      try {
-        const res = await fetch(`/api/listing/getList/${listing._id}/getReview/${editFormData._id}/editReview`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(editFormData)
-        })
-        const data = await res.json()
-        setReviews(data[0].reviews)
-        setRatingAverage(getAverageRating(data[0].reviews))
-        setEditReview(false)
-      } catch (err) {
-        console.log(err)
-      }
-    }
-    console.log(listing)
-    console.log('reviews:', reviews)
+  }
+
   return (
     <main className='mt-10'>
       {loading && <p className='text-center my-7 text-2xl'>Loading...</p>}
@@ -231,21 +226,19 @@ Object
 
       {listing && !loading && !error &&
         <div className='max-w-3xl mx-auto mt-5 lg:max-w-6xl'>
+
           {/* navigation allows user to 'slide between the images with arrow buttons */}
           {/* Swiper tag is the images section, displays user uploaded images */}
-
           <div className='max-w-3xl md:max-w-5xl mx-atuo flex items-center'>
             <Swiper navigation modules={[Virtual]}>
               {listing.imageUrls.map((imgUrl) => {
                 return <SwiperSlide key={uuidv4()} >
-                  <div className='h-[400px] lg:h-auto'>
-                    <img src={imgUrl} alt={imgUrl} className='max-w-5xl object-contain lg:object-cover' />
+                  <div className='h-auto'>
+                    <img src={imgUrl} alt={imgUrl} className='max-w-5xl w-full object-fill lg:object-cover' />
                   </div>
-
                 </SwiperSlide>
               })}
             </Swiper>
-
           </div>
 
 
@@ -279,7 +272,8 @@ Object
                   {listing.type === 'rent' && ' / month'}
                 </p>
                 <div className='flex items-center mt-6 gap-10'>
-                  <p className='font-semibold'>
+                  <p className='font-semibold flex gap-2 items-center text-lg'>
+                  <img className='rounded-full h-12 w-12 object-cover self-center mt-2' src={listing.userRef.accountImage} alt="Profile Image" />
                     Posted By: {listing.userRef.username}
                   </p>
                   <p className='flex items-center gap-2 text-slate-600 text-sm'>
@@ -347,8 +341,8 @@ Object
             {/* review section  */}
             <section className='p-3 flex flex-col gap-3 max-w-3xl lg:max-w-2xl lg:w-2/6 my-10'>
 
-              {/* only allow a logged in user, a user that did not post the listing to write a review otherwise dont display button aka cant post review */}
-              {currentUser.currentUser && currentUser.currentUser === listing.userRef._id && reviews && !checkUserHasReview(reviews) && <button className='font-mono font-semibold text-white bg-orange-600 p-3 rounded-lg hover:underline hover:opacity-80' onClick={() => setWriteReview(!writeReview)}>Write a review</button>}
+              {/* only allow a logged in user, & a user that did not post the listing to write a review otherwise dont display button aka cant post review */}
+              {currentUser.currentUser && currentUser.currentUser._id !== listing.userRef._id && !checkUserHasReview(reviews) && <button className='font-mono font-semibold text-white bg-orange-600 p-3 rounded-lg hover:underline hover:opacity-80' onClick={() => setWriteReview(!writeReview)}>Write a review</button>}
 
               {/* create review form section */}
               {writeReview &&
@@ -365,7 +359,7 @@ Object
               }
 
               {/* only allow a logged in user to write a review otherwise dont display button */}
-              {currentUser.currentUser && reviews && checkUserHasReview(reviews) && <button className='font-mono font-semibold text-white bg-orange-600 p-3 rounded-lg hover:underline hover:opacity-80' onClick={() => setEditReview(!editReview)}>Edit Your Review</button>}
+              {currentUser.currentUser && checkUserHasReview(reviews) && <button className='font-mono font-semibold text-white bg-orange-600 p-3 rounded-lg hover:underline hover:opacity-80' onClick={() => setEditReview(!editReview)}>Edit Your Review</button>}
 
               {/* create review form section */}
               {editReview &&
@@ -387,8 +381,9 @@ Object
               </div>
 
 
-              {/* div that displays all the reviews written for this listing. */}
+              {/* div that displays all the reviews posted on this listing. */}
               <div className='max-h-96 overflow-auto'>
+
                 {reviews.map(review => (
                   <div className='flex flex-col justify-center p-3' key={review._id}>
                     {/* review text information display section */}
@@ -411,19 +406,15 @@ Object
 
                     {/*edit & delete button section */}
                     {currentUser.currentUser && review.author._id === currentUser.currentUser._id &&
-                      <div className='flex items-center gap-5 mt-1'>
-
-                        {/* <button className='flex gap-1 items-center bg-blue-400 text-white p-1 rounded-lg w-20 justify-center hover:underline'><span className=''><FaEdit /></span>edit</button> */}
-
+                      <div className='flex items-center gap-5 mt-2'>
                         <button className='flex gap-1 items-center text-white bg-red-600 p-1 rounded-lg w-20 justify-center hover:underline' onClick={() => handleReviewDelete(review._id)}><span className='text-lg'><MdDeleteForever /></span>delete</button>
                       </div>
                     }
 
                   </div>
+                  
                 ))}
               </div>
-
-
             </section>
           </div>
 

@@ -9,6 +9,7 @@ export const test = (req, res) => {
     )
 }
 
+//update the users obj, and returns the user obj without the password.
 export const updateUser = async (req, res, next) => {
     const { userId } = req.params
     const { username, email, accountImage } = req.body
@@ -37,6 +38,7 @@ export const updateUser = async (req, res, next) => {
     }
 }
 
+//delete the user obj from the collection & log the user out.
 export const deleteUser = async (req, res, next) => {
     const { userId } = req.params
     //req.user is a property that was added to the req obj in the previous middleware. and it stores info on the current user that is logged in.
@@ -50,6 +52,7 @@ export const deleteUser = async (req, res, next) => {
     }
 }
 
+//retrieve all the listings a user has posted to the listings colelction & returns an arr of all the listing objs by the user
 export const getUserListing = async (req, res, next) => {
     const { userId } = req.params
     if (req.user.id === userId) {
@@ -81,6 +84,7 @@ export const deleteUserListings = async(req, res, next) => {
     }
 }
 
+//returns the specified user obj WITHOUT the password property.
 export const getUser = async(req, res, next) => {
     try {
         const { userId } = req.params
@@ -92,5 +96,4 @@ export const getUser = async(req, res, next) => {
     } catch(err) {
         next(err)
     }
-
 }

@@ -94,7 +94,9 @@ export default function Profile() {
 
   const handleDeleteUser = async (event) => {
     try {
+      const UserId = currentUser._id
       dispatch(deleteUserStart())
+      await deleteAllListings(UserId)
       const res = await fetch(`/api/user/delete/${currentUser._id}`, {
         method: 'DELETE'
       })
@@ -103,26 +105,29 @@ export default function Profile() {
         dispatch(deleteUserFailure(data.message))
         return
       }
-      deleteUploadsFromUser()
       dispatch(deleteUserSuccess(data))
     } catch (err) {
       dispatch(deleteUserFailure(err.message))
     }
   }
 
-  //delete all uploads the user has ever made from our firebase storage.
-  const deleteUploadsFromUser = () => {
-    const storage = getStorage(app);
-    // filepath of the user folder in our firebase storage that stores all user uploads is to be deleted
-      const listingRef = `${currentUser.username}${currentUser._id}`
-      // Create a reference to the user folder to delete
-      const desertRef = ref(storage, listingRef);
-      // Delete the folder
-      deleteObject(desertRef).then(() => {
-          console.log("User upload folder deleted from firebase")
-      }).catch((error) => {
-          console.log(error)
-      });
+  const deleteAllListings = async (UserId) => {
+    try {
+      const res2 = await fetch(`/api/user/listings/${currentUser._id}`)
+      const data2 = await res2.json()
+      //deletes all listing uploads
+      for(let i = 0; i < data2.length; i++) {
+        deleteImageFromFirebase(data2[i].imageNames)
+      }
+      //deletes all listings created by the user & returns the listing docs that were deleted.
+      const res = await fetch(`/api/user/getUser/${UserId}/deleteListings`, {
+        method: 'DELETE'
+      })
+      const data = await res.json()
+      console.log(data)
+    } catch(err) {
+      console.log(err)
+    }
   }
 
   const handleSignOut = async () => {
@@ -163,6 +168,7 @@ export default function Profile() {
     handleUserListings()
   }
 
+  //deletes the listing and all of its image uploads from firebase
   const handleDeleteListing = async (listingId) => {
     try {
       //api returns the deleted listing doc
@@ -240,7 +246,9 @@ export default function Profile() {
       <p className='text-red-600 mt-5'>{error ? error : ''}</p>
       <p className='text-green-700 mt-5'>{updateSuccess ? 'User is updated successfully!' : ''}</p>
 
-      <button onClick={toggleShowListings} className='text-green-700 text-lg font-bold w-full'>Show Listings</button>
+      <button onClick={toggleShowListings} className='text-green-700 text-lg font-bold w-full'>
+        {showListing ? 'Hide Listings' : 'Show Listings'}
+      </button>
       <p className='text-red-700 mt-5'>
         {showListingError ? 'Error showing listings' : ''}
       </p>
