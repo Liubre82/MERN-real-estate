@@ -1,6 +1,6 @@
 import express from 'express'
 const router = express.Router()
-import {createListing, deleteListing, editListing, getAllListings, getListing, getSearchListings, createReview, deleteReview} from '../controllers/listing.controllers.js'
+import {createListing, deleteListing, editListing, getAllListings, getListing, getSearchListings, createReview, deleteReview, editReview} from '../controllers/listing.controllers.js'
 import { verifyToken } from '../utils/verifyUser.js'
 
 
@@ -21,6 +21,8 @@ router.post('/edit/:listingId', verifyToken, editListing)
 
 //create a new review to the reviews collection of a specific listing, & add the review to the listing.reviews array
 router.post('/getList/:listingId/createReview', verifyToken, createReview)
+
+router.post('/getList/:listingId/getReview/:reviewId/editReview', verifyToken, editReview)
 
 //delete a specific listing from the listings collection
 router.delete('/delete/:listingId', verifyToken, deleteListing)

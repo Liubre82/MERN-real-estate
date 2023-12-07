@@ -48,19 +48,22 @@ Object
   const [contact, setContact] = useState(false)
   const [copied, setCopied] = useState(false);
   const [writeReview, setWriteReview] = useState(false)
+  const [editReview, setEditReview] = useState(false)
   
   //stores fetched listing based on the listingId from url
   const [listing, setListing] = useState(null)
   //stores all the listing reviews in the reviews state
   const [reviews, setReviews] = useState(null)
+  const [currentUserReview, setCurrentUserReview] = useState(null)
   const [formData, setFormData] = useState({
     rating: 1,
     description: '',
     title: ''
   })
+  const [editFormData, setEditFormData] = useState({})
   const [ratingAverage, setRatingAverage] = useState(null)
 
-  //calculate the average rating of all the reviews for this paticular listing.
+  //calculate the average rating of all the reviews for this particular listing.
   const getAverageRating = (arr) => {
     let sum = 0;
     if (arr.length === 0) {
@@ -90,8 +93,20 @@ Object
         setLoading(false)
         return
       }
+      console.log("fetchListing:",data)
       setListing(data)
       setReviews(data.reviews)
+
+      if(currentUser.currentUser) {
+      //checks if user has a written a review or not.
+      for(let i = 0; i < data.reviews.length; i++) {
+        if(data.reviews[i].author._id === currentUser.currentUser._id) {
+          setEditFormData(data.reviews[i])
+          break
+        }
+      }
+      }
+
       setRatingAverage(getAverageRating(data.reviews))
       setLoading(false)
       setError(false)
@@ -116,10 +131,15 @@ Object
     fetchListing(listing)
   }, [params.listingId]) //[]indicates useEffect will run only once, and the data inside means everytime there is a change in the params.listingId in the url, run the useEffect
 
-  // Change star-ratingvalue
+  // Change star-rating value for create review form
   const handleRating = (rate) => {
     setFormData({ ...formData, rating: rate })
   }
+
+    // Change star-rating value for edit review form
+    const handleEditRating = (rate) => {
+      setEditFormData({ ...editFormData, rating: rate })
+    }
 
   //change value of review form data on every change
   const handleChange = (e) => {
@@ -141,15 +161,19 @@ Object
         body: JSON.stringify(formData)
       })
       const data = await res.json()
+      console.log(data)
       setWriteReview(false)
-      setReviews(data.reviews)
-      setListing(data)
+      setReviews(data[0].reviews)
+      setListing(data[0])
+      setRatingAverage(getAverageRating(data[0].reviews))
+      setCurrentUserReview(data[1])
+      console.log(data[1])
+      setEditFormData(formData)
       setFormData({
         rating: 1,
         description: '',
         title: ''
       })
-
     } catch (err) {
       console.log(err)
     }
@@ -162,14 +186,45 @@ Object
       const res = await fetch(`/api/listing/getList/${listing._id}/deleteReview/${reviewId}`, { method: 'DELETE' })
       const data = await res.json()
       console.log(data)
+      setEditReview(false)
+      console.log("delete:", data.reviews)
+      setRatingAverage(getAverageRating(data.reviews))
       setReviews((prev) => prev.filter(review => review._id !== reviewId))
     } catch (err) {
       console.log(err)
     }
   }
 
+    //change value of edit review form data on every change
+    const handleEditChange = (e) => {
+      setEditFormData({
+        ...editFormData,
+        [e.target.id]: e.target.value
+      })
+    }
+  
+    //update users review.
+    const handleEditSubmit = async (e) => {
+      e.preventDefault()
+      try {
+        const res = await fetch(`/api/listing/getList/${listing._id}/getReview/${editFormData._id}/editReview`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(editFormData)
+        })
+        const data = await res.json()
+        setReviews(data[0].reviews)
+        setRatingAverage(getAverageRating(data[0].reviews))
+        setEditReview(false)
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    console.log(listing)
+    console.log('reviews:', reviews)
   return (
-
     <main className='mt-10'>
       {loading && <p className='text-center my-7 text-2xl'>Loading...</p>}
       {error && <p className='text-center my-5 text-2xl'>Something Went Wrong</p>}
@@ -295,6 +350,7 @@ Object
               {/* only allow a logged in user to write a review otherwise dont display button */}
               {currentUser.currentUser && reviews && !checkUserHasReview(reviews) && <button className='font-mono font-semibold text-white bg-orange-600 p-3 rounded-lg hover:underline hover:opacity-80' onClick={() => setWriteReview(!writeReview)}>Write a review</button>}
 
+              {/* create review form section */}
               {writeReview &&
                 <form className='flex flex-col gap-3 ' onSubmit={handleSubmit}>
                   <div className='flex justify-between'>
@@ -306,11 +362,28 @@ Object
                   <input type="text" id='title' placeholder='write review title...' className=' p-3 rounded-lg' maxLength={60} required onChange={handleChange} value={formData.title} />
                   <textarea id="description" cols="50" rows="2" placeholder='write your review here....' className='p-3 rounded-md' required onChange={handleChange} value={formData.description}></textarea>
                 </form>
-
               }
+
+              {/* only allow a logged in user to write a review otherwise dont display button */}
+              {currentUser.currentUser && reviews && checkUserHasReview(reviews) && <button className='font-mono font-semibold text-white bg-orange-600 p-3 rounded-lg hover:underline hover:opacity-80' onClick={() => setEditReview(!editReview)}>Edit Your Review</button>}
+
+              {/* create review form section */}
+              {editReview &&
+                <form className='flex flex-col gap-3' onSubmit={handleEditSubmit} >
+                  <div className='flex justify-between'>
+                    <Rating onClick={handleEditRating} SVGclassName={'inline-block'}
+                      allowFraction={true} SVGstorkeWidth={1} initialValue={editFormData.rating}
+                      SVGstrokeColor={'#f1a545'} transition={true} />
+                    <button className='p-3 bg-orange-600 rounded-lg text-white font-semibold hover:underline hover:opacity-80'>Update Review</button>
+                  </div>
+                  <input type="text" id='title' placeholder='write review title...' className=' p-3 rounded-lg' maxLength={60} required onChange={handleEditChange} value={editFormData.title} />
+                  <textarea id="description" cols="50" rows="2" placeholder='write your review here....' className='p-3 rounded-md' required onChange={handleEditChange} value={editFormData.description}></textarea>
+                </form>
+              }
+
               <div className='flex gap-5 items-center lg:justify-between'>
                 {reviews.length === 0 ? <p className='font-mono text-xl text-center'>No reviews</p> : <p className='font-mono text-2xl p-3 font-bold'>User Reviews</p>}
-                {<div className='text-xl flex gap-1 items-center text-yellow-500 font-bold'><IoIosStar /> {ratingAverage}</div>}
+                {<div className='text-xl flex gap-1 items-center text-orange-500 font-bold'><IoIosStar /> {ratingAverage}</div>}
               </div>
 
 
@@ -356,8 +429,6 @@ Object
 
         </div>
       }
-
-
     </main >
   )
 }

@@ -141,7 +141,7 @@ export const createReview = async (req, res, next) => {
         await review.save()
         await findListing.save()
         const updatedListing = await Listing.findById(listingId)
-        return res.status(201).json(updatedListing)
+        return res.status(201).json([updatedListing, review])
     } catch(err) {
         next(err)
     }
@@ -161,9 +161,31 @@ export const deleteReview = async (req, res, next) => {
         if (JSON.stringify(req.user.id) !== JSON.stringify(findReview.author)) {
             return next(errorHandler(401, 'You can only delete your own reviews!'))
         } 
-        const deleteReviewFromListing = await Listing.findByIdAndUpdate(listingId, { $pull: { reviews: reviewId}})
+        const deleteReviewFromListing = await Listing.findByIdAndUpdate(listingId, { $pull: { reviews: reviewId}}, { new: true }).populate('reviews')
         const deleteReview = await Review.findByIdAndDelete(reviewId)
-        res.status(200).json(deleteReview)
+        res.status(200).json(deleteReviewFromListing)
+    } catch(err) {
+        next(err)
+    }
+}
+
+export const editReview = async (req, res, next) => {
+    try {
+        const { listingId, reviewId } = req.params  
+        const findListing = await Listing.findById(listingId)
+        const findReview =  await Review.findById(reviewId)
+        if (!findListing) {
+            return next(errorHandler(404, 'Listing is not found.'))
+        }
+        if (!findReview) {
+            return next(errorHandler(404, 'Review is not found.'))
+        }
+        if (JSON.stringify(req.user.id) !== JSON.stringify(findReview.author)) {
+            return next(errorHandler(401, 'You can only delete your own reviews!'))
+        } 
+        const updateReview = await Review.findByIdAndUpdate(reviewId, req.body, { new: true })
+        const updatedList = await Listing.findById(listingId)
+        res.status(200).json([updatedList, updateReview]);
     } catch(err) {
         next(err)
     }

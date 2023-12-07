@@ -25,7 +25,7 @@ mongoose.connect(process.env.mongodbConnect).then(() => {
 app.use('/api/user', userRouter)
 app.use('/api/auth', authRouter)
 app.use('/api/listing', listingRouter)
-app.use('/api/review', reviewRouter)
+//app.use('/api/review', reviewRouter)
 
 app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500

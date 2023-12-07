@@ -183,10 +183,11 @@ export default function CreateListing() {
         <main className='p-3 max-w-4xl mx-auto'>
             <h1 className='text-3xl font-semibold text-center my-7'>Create a Listing</h1>
             <form className='flex flex-col sm:flex-row gap-5'>
+
                 {/* user inputs section */}
                 <section className='flex flex-col gap-4 flex-1'>
-
-                    <section className='flex flex-col gap-4'> {/* Text boxes */}
+                    {/* Text boxes */}
+                    <section className='flex flex-col gap-4'> 
                         <input type="text" placeholder='Name' className='border p-3 rounded-lg' id='name' name='name' maxLength={62} minLength={10} required onChange={handleChange} value={formData.name} />
                         <textarea type="text" placeholder='Description' className='border p-3 rounded-lg' id='description' name='description' required
                             onChange={handleChange} value={formData.description} />
@@ -201,8 +202,9 @@ export default function CreateListing() {
                         <CheckBox id={'furnished'} checkBoxToggle={formData.furnished} handleChange={handleChange} name={'Furnished'} />
                         <CheckBox id={'offer'} checkBoxToggle={formData.offer} handleChange={handleChange} name={'Offer'} />
                     </section>
-
-                    <section className='flex flex-wrap gap-6'> {/* Number input boxes section */}
+                    
+                    {/* Number input boxes section */}
+                    <section className='flex flex-wrap gap-6'> 
                         <div className='flex gap-2 items-center'>
                             <input className='rounded-lg p-3 border-gray-300 ' type="number" id='bedrooms' min='1' max='10' required onChange={handleChange} value={formData.bedrooms} />
                             <label htmlFor="bedrooms">Beds</label>
