@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux'
 import { useRef, useState, useEffect } from 'react'
-import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage'
+import { getDownloadURL, getStorage, ref, uploadBytesResumable, deleteObject  } from 'firebase/storage'
 import { app } from '../firebase'
 import { updateUserStart, updateUserSuccess, updateUserFailure, deleteUserFailure, deleteUserStart, deleteUserSuccess, signOutUserStart, signOutUserSuccess, signOutUserFailure } from '../redux/user/userSlice'
 import { useDispatch } from 'react-redux'
@@ -103,10 +103,26 @@ export default function Profile() {
         dispatch(deleteUserFailure(data.message))
         return
       }
+      deleteUploadsFromUser()
       dispatch(deleteUserSuccess(data))
     } catch (err) {
       dispatch(deleteUserFailure(err.message))
     }
+  }
+
+  //delete all uploads the user has ever made from our firebase storage.
+  const deleteUploadsFromUser = () => {
+    const storage = getStorage(app);
+    // filepath of the user folder in our firebase storage that stores all user uploads is to be deleted
+      const listingRef = `${currentUser.username}${currentUser._id}`
+      // Create a reference to the user folder to delete
+      const desertRef = ref(storage, listingRef);
+      // Delete the folder
+      deleteObject(desertRef).then(() => {
+          console.log("User upload folder deleted from firebase")
+      }).catch((error) => {
+          console.log(error)
+      });
   }
 
   const handleSignOut = async () => {
@@ -149,17 +165,37 @@ export default function Profile() {
 
   const handleDeleteListing = async (listingId) => {
     try {
+      //api returns the deleted listing doc
       const res = await fetch(`/api/listing/delete/${listingId}`, { method: 'DELETE' })
-      const data = res.json()
+      const data = await res.json()
       if (data.success === false) {
         return console.log(data)
       }
+
       setUserListings((prev) => prev.filter(listing => listing._id !== listingId))
+      deleteImageFromFirebase(data.imageNames)
     } catch (err) {
       console.log(err)
     }
 
   }
+    //function permanently deletes all images uploaded on the listing from firebase when a listing is deleted.
+    const deleteImageFromFirebase = (imagesArr) => {
+        const storage = getStorage(app);
+        // filepath of the image in our firebase storage that is to be deleted
+
+        for(let i = 0; i < imagesArr.length; i++) {
+          const listingRef = `${currentUser.username}${currentUser._id}/listings/${imagesArr[i]}`
+          // Create a reference to the file to delete
+          const desertRef = ref(storage, listingRef);
+          // Delete the file
+          deleteObject(desertRef).then(() => {
+              console.log("image deleted from firebase")
+          }).catch((error) => {
+              console.log(error)
+          });
+        }
+    }
 
 
   return (

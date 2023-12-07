@@ -347,8 +347,8 @@ Object
             {/* review section  */}
             <section className='p-3 flex flex-col gap-3 max-w-3xl lg:max-w-2xl lg:w-2/6 my-10'>
 
-              {/* only allow a logged in user to write a review otherwise dont display button */}
-              {currentUser.currentUser && reviews && !checkUserHasReview(reviews) && <button className='font-mono font-semibold text-white bg-orange-600 p-3 rounded-lg hover:underline hover:opacity-80' onClick={() => setWriteReview(!writeReview)}>Write a review</button>}
+              {/* only allow a logged in user, a user that did not post the listing to write a review otherwise dont display button aka cant post review */}
+              {currentUser.currentUser && currentUser.currentUser === listing.userRef._id && reviews && !checkUserHasReview(reviews) && <button className='font-mono font-semibold text-white bg-orange-600 p-3 rounded-lg hover:underline hover:opacity-80' onClick={() => setWriteReview(!writeReview)}>Write a review</button>}
 
               {/* create review form section */}
               {writeReview &&

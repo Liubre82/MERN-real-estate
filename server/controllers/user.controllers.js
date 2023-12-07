@@ -66,6 +66,21 @@ export const getUserListing = async (req, res, next) => {
     }
 }
 
+//delete all listings the user has created.
+export const deleteUserListings = async(req, res, next) => {
+    const { userId } = req.params
+    if (req.user.id === userId) {
+        try {
+            const listings = await Listing.deleteMany({ userRef: userId })
+            res.status(200).json(listings)
+        } catch (err) {
+            next(err)
+        }
+    } else {
+        return next(errorHandler(401, 'You can only delete your own accounts listings!'))
+    }
+}
+
 export const getUser = async(req, res, next) => {
     try {
         const { userId } = req.params
