@@ -21,6 +21,8 @@ import { useNavigate } from "react-router-dom";
 import { Rating } from 'react-simple-star-rating'
 import Contact from '../components/Contact.jsx'
 import { Virtual } from 'swiper/modules';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Listing() {
 
@@ -221,6 +223,18 @@ Object
 
   return (
     <main className='mt-10'>
+      <ToastContainer
+        position="bottom-center"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable
+        pauseOnHover={false}
+        theme="light"
+      />
       {loading && <p className='text-center my-7 text-2xl'>Loading...</p>}
       {error && <p className='text-center my-5 text-2xl'>Something Went Wrong</p>}
 
@@ -355,7 +369,7 @@ Object
                     <Rating onClick={handleRating} SVGclassName={'inline-block'}
                       allowFraction={true} SVGstorkeWidth={1} initialValue={formData.rating}
                       SVGstrokeColor={'#f1a545'} transition={true} />
-                    <button className='p-3 bg-orange-600 rounded-lg text-white font-semibold hover:underline hover:opacity-80'>Submit Review</button>
+                    <button className='p-3 bg-orange-600 rounded-lg text-white font-semibold hover:underline hover:opacity-80' onClick={() => toast.success("review submitted!")}>Submit Review</button>
                   </div>
                   <input type="text" id='title' placeholder='write review title...' className=' p-3 rounded-lg' maxLength={60} required onChange={handleChange} value={formData.title} />
                   <textarea id="description" cols="50" rows="2" placeholder='write your review here....' className='p-3 rounded-md' required onChange={handleChange} value={formData.description}></textarea>
@@ -372,7 +386,7 @@ Object
                     <Rating onClick={handleEditRating} SVGclassName={'inline-block'}
                       allowFraction={true} SVGstorkeWidth={1} initialValue={editFormData.rating}
                       SVGstrokeColor={'#f1a545'} transition={true} />
-                    <button className='p-3 bg-orange-600 rounded-lg text-white font-semibold hover:underline hover:opacity-80'>Update Review</button>
+                    <button className='p-3 bg-orange-600 rounded-lg text-white font-semibold hover:underline hover:opacity-80' onClick={() => toast.success("review updated!")}>Update Review</button>
                   </div>
                   <input type="text" id='title' placeholder='write review title...' className=' p-3 rounded-lg' maxLength={60} required onChange={handleEditChange} value={editFormData.title} />
                   <textarea id="description" cols="50" rows="2" placeholder='write your review here....' className='p-3 rounded-md' required onChange={handleEditChange} value={editFormData.description}></textarea>
