@@ -219,8 +219,6 @@ Object
     }
   }
 
-  console.log(listing)
-
   return (
     <main className='mt-10'>
       {loading && <p className='text-center my-7 text-2xl'>Loading...</p>}
