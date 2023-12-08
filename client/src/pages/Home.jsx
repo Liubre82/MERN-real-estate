@@ -5,7 +5,6 @@ import SwiperCore from 'swiper'
 import { Navigation } from 'swiper/modules'
 import { v4 as uuidv4 } from 'uuid';
 import 'swiper/css/bundle'
-import ListingCard from '../components/ListingCard'
 import { Virtual } from 'swiper/modules';
 import CategoryListings from '../components/categoryListings'
 
