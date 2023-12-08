@@ -1,6 +1,7 @@
 # Estate-Finder-MERN
 
 
+
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 estateFinder is a real estate marketplace website that displays real estate properties that are listed up for rent or for sale that 
@@ -59,7 +60,7 @@ setting up your project locally. To get a local copy up and running follow these
    ```
 
 
-### MongoDB database, JWT, and firebase storage setup
+### Setup
 
 * create your own firebase project and initialize firebase in the `client/firebase.js` directory
   [![firebaseConfig][firebase-config-img]][firebase-config-img-url]
