@@ -6,7 +6,7 @@ import { Navigation } from 'swiper/modules'
 import { v4 as uuidv4 } from 'uuid';
 import 'swiper/css/bundle'
 import { Virtual } from 'swiper/modules';
-import CategoryListings from '../components/categoryListings'
+import CategoryListings from '../components/CategoryListings.jsx'
 
 export default function Home() {
   const [offerListings, setOfferListings] = useState([])
