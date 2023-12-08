@@ -6,6 +6,11 @@ import Listing from '../models/listing.model.js'
 import dotenv from 'dotenv'
 dotenv.config()
 
+/* Seeds file will CLEAR/DELETE your ENTIRE listings & reviews collection then store some static data to our db to have some initial data for our website, so we have something to display immediately rather than an empty website & having to manually create individual listings & reviews. 
+
+for adding reviews, you must create your own user/s then specify the user ids as the createReviews args. look at createReviews() and how its used inside seedsDb() & see userIds array.
+*/
+
 mongoose.connect(process.env.mongodbConnect).then(() => {
     console.log('Connected to MongoDB')
 })
@@ -45,8 +50,10 @@ const seedDb = async () => {
     await Listing.deleteMany({})
     await Review.deleteMany({})
 
+    const userIds = ["65603f2e3739a6fb33d25ea2", "65603f653739a6fb33d25ea4", "657020d95462f62d6b917356", "657027e70107280ef06ab28c"]
+
     for (let i = 0; i < listings.length; i++) {
-        const reviews = await createReviews("65603f2e3739a6fb33d25ea2", "65603f653739a6fb33d25ea4", "657020d95462f62d6b917356", "657027e70107280ef06ab28c")
+        const reviews = await createReviews(...userIds)
         shuffleArray(listings[i].imageUrls)
         const listing = new Listing({...listings[i], reviews})
         await listing.save()
