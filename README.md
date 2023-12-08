@@ -62,13 +62,13 @@ setting up your project locally. To get a local copy up and running follow these
 
 ### Setup
 
-* create your own firebase project and initialize firebase in the `client/firebase.js` directory
-  [![firebaseConfig][firebase-config-img]][firebase-config-img-url]
+* create your own firebase project and initialize firebase. create a firebase.js file in the `client/src` directory
+
   ```sh
   inside your firebase Project settings, scroll down and copy the given firebase initializer code
-  and paste/overwrite the code in the client/firebase.js file;
+  and paste the code in the client/src/firebase.js file;
    ```
-
+  [![firebaseConfig][firebase-config-img]][firebase-config-img-url]
    
 * Create your own mongodb database & enter your mongodb connection string inside your `root` .env file (create a .env file in the `root` directory)
   to connect to your MongoDB deployment.
