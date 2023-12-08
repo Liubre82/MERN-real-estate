@@ -53,6 +53,7 @@ export default function Search() {
 
         const fetchListings = async () => {
             try {
+
                 setLoading(true)
                 setShowMore(false);
                 const searchQuery = urlParams.toString()
@@ -73,7 +74,6 @@ export default function Search() {
         }
         fetchListings()
     }, [location.search])
-
     //changes the filter form based on what the user clicks/chooses
     const handleChange = (e) => {
         if (e.target.id === 'searchTerm') {
