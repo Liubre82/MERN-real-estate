@@ -29,7 +29,7 @@ export const signIn = async (req, res, next) => {
         //destructure the user obj, extract the password property from the obj, then use the rest parameter which creates a new obj of all the rest of the properties that were not extracted. so password in this instance will not be in the new otherDetails obj 
         //https://www.digitalocean.com/community/tutorials/understanding-destructuring-rest-parameters-and-spread-syntax-in-javascript#spread
         const { password: pass, ...otherDetails } = user._doc;
-        res.cookie('access_token', token, { httpOnly: true }).status(200).json(otherDetails) //session
+        res.cookie('access_token', token, { httpOnly: true, expires: new Date(Date.now() + 2 * 60 * 60 * 1000)}).status(200).json(otherDetails) //session
     } catch (err) {
         next(err)
     }
@@ -43,7 +43,7 @@ export const signInGoogle = async (req, res, next) => {
             const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET)
             const { password: pass, ...otherDetails } = user._doc;
             res
-                .cookie('access_token', token, { httpOnly: true })
+                .cookie('access_token', token, { httpOnly: true, expires: new Date(Date.now() + 2 * 60 * 60 * 1000)})
                 .status(200)
                 .json(otherDetails) 
         } else {
@@ -55,7 +55,7 @@ export const signInGoogle = async (req, res, next) => {
             const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET)
             const { password: pass, ...otherDetails } = newUser._doc;
             res
-                .cookie('access_token', token, { httpOnly: true })
+                .cookie('access_token', token, { httpOnly: true, expires: new Date(Date.now() + 2 * 60 * 60 * 1000)})
                 .status(200)
                 .json(otherDetails) 
         }

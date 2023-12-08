@@ -164,6 +164,11 @@ Object
         body: JSON.stringify(formData)
       })
       const data = await res.json()
+      if(data.success === false) {
+        toast.error("Unsuccessful, could not submit review!")
+        return
+      }
+      toast.success("review sucessfuly created!")
       setWriteReview(false)
       setReviews(data[0].reviews)
       setListing(data[0])
@@ -213,6 +218,11 @@ Object
         body: JSON.stringify(editFormData)
       })
       const data = await res.json()
+      if(data.success === false) {
+        toast.error("Unsuccessful, could not edit review!")
+        return
+      }
+      toast.success("review updated!")
       setReviews(data[0].reviews)
       setRatingAverage(getAverageRating(data[0].reviews))
       setEditReview(false)
@@ -369,7 +379,7 @@ Object
                     <Rating onClick={handleRating} SVGclassName={'inline-block'}
                       allowFraction={true} SVGstorkeWidth={1} initialValue={formData.rating}
                       SVGstrokeColor={'#f1a545'} transition={true} />
-                    <button className='p-3 bg-orange-600 rounded-lg text-white font-semibold hover:underline hover:opacity-80' onClick={() => toast.success("review submitted!")}>Submit Review</button>
+                    <button className='p-3 bg-orange-600 rounded-lg text-white font-semibold hover:underline hover:opacity-80' >Submit Review</button>
                   </div>
                   <input type="text" id='title' placeholder='write review title...' className=' p-3 rounded-lg' maxLength={60} required onChange={handleChange} value={formData.title} />
                   <textarea id="description" cols="50" rows="2" placeholder='write your review here....' className='p-3 rounded-md' required onChange={handleChange} value={formData.description}></textarea>
@@ -386,7 +396,7 @@ Object
                     <Rating onClick={handleEditRating} SVGclassName={'inline-block'}
                       allowFraction={true} SVGstorkeWidth={1} initialValue={editFormData.rating}
                       SVGstrokeColor={'#f1a545'} transition={true} />
-                    <button className='p-3 bg-orange-600 rounded-lg text-white font-semibold hover:underline hover:opacity-80' onClick={() => toast.success("review updated!")}>Update Review</button>
+                    <button className='p-3 bg-orange-600 rounded-lg text-white font-semibold hover:underline hover:opacity-80'>Update Review</button>
                   </div>
                   <input type="text" id='title' placeholder='write review title...' className=' p-3 rounded-lg' maxLength={60} required onChange={handleEditChange} value={editFormData.title} />
                   <textarea id="description" cols="50" rows="2" placeholder='write your review here....' className='p-3 rounded-md' required onChange={handleEditChange} value={editFormData.description}></textarea>
