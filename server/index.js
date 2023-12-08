@@ -6,6 +6,7 @@ import authRouter from './routes/auth.routes.js'
 import listingRouter from './routes/listing.routes.js'
 import reviewRouter from './routes/review.routes.js'
 import cookieParser from 'cookie-parser'
+import path from 'path'
 dotenv.config()
 
 const app = express()
@@ -21,6 +22,8 @@ mongoose.connect(process.env.mongodbConnect).then(() => {
 .catch(err => {
     console.log(err)
 })
+
+const __dirname = path.resolve();
 
 //api routes
 app.use('/api/user', userRouter)
