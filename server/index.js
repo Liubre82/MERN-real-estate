@@ -22,10 +22,18 @@ mongoose.connect(process.env.mongodbConnect).then(() => {
     console.log(err)
 })
 
+//api routes
 app.use('/api/user', userRouter)
 app.use('/api/auth', authRouter)
 app.use('/api/listing', listingRouter)
 //app.use('/api/review', reviewRouter)
+
+app.use(express.static(path.join(__dirname, '/client/dist')))
+
+//if route is not any of our api routes, it will run our index.html file which is the frontend pages
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '/client', 'dist', 'index.html'))
+})
 
 app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500
