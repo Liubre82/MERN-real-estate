@@ -8,17 +8,17 @@ router.get('/test', test)
 //returns the specified user obj WITHOUT the password property.
 router.get('/:userId', verifyToken, getUser)
 
-//retrieve all the listings a user has posted to the listings colelction & returns an arr of all the listing objs by the user
-router.get('/listings/:userId', verifyToken, getUserListing)
+//returns an arr of all the listing objs created by the user
+router.get('/:userId/listings', verifyToken, getUserListing)
 
-//delete all listings the user has created. returns an arr confirming listings has been deleted.
-router.delete('/getUser/:userId/deleteListings', verifyToken, deleteUserListings)
+//returns an array confirming listings has been deleted.
+router.delete('/:userId/listings', verifyToken, deleteUserListings)
 
-//update the users obj, and returns the user obj without the password.
-router.post('/update/:userId', verifyToken ,updateUser)
+//returns the updated user obj without the password.
+router.post('/:userId', verifyToken ,updateUser)
 
-//delete the user obj from the collection & log the user out.
-router.delete('/delete/:userId', verifyToken, deleteUser)
+//returns a confirmation string that the user has been deleted
+router.delete('/:userId', verifyToken, deleteUser)
 
 
 

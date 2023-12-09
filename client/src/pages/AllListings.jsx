@@ -11,7 +11,7 @@ export default function AllListings() {
         const fetchAllListings = async () => {
             try {
                 setLoading(true)
-                const res = await fetch(`api/listing/allListings`)
+                const res = await fetch(`api/listings/`)
                 const data = await res.json()
                 setAllListings(data)
                 setLoading(false)

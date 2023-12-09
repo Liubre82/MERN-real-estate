@@ -26,9 +26,9 @@ mongoose.connect(process.env.mongodbConnect).then(() => {
 const __dirname = path.resolve();
 
 //api routes
-app.use('/api/user', userRouter)
+app.use('/api/users', userRouter)
 app.use('/api/auth', authRouter)
-app.use('/api/listing', listingRouter)
+app.use('/api/listings', listingRouter)
 //app.use('/api/review', reviewRouter)
 
 app.use(express.static(path.join(__dirname, '/client/dist')))

@@ -88,7 +88,7 @@ Object
         title: ''
       })
       setLoading(true)
-      const res = await fetch(`/api/listing/getList/${params.listingId}`)
+      const res = await fetch(`/api/listings/${params.listingId}`)
       const data = await res.json()
       if (data.success === false) {
         setError(true)
@@ -156,7 +156,7 @@ Object
     e.preventDefault()
     try {
       //returns an array of 2 objs, 1st obj is the updated Listing doc with the added review, & 2nd obj is the newly created review doc the user just submitted.
-      const res = await fetch(`/api/listing/getList/${listing._id}/createReview`, {
+      const res = await fetch(`/api/listings/${listing._id}/reviews`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -188,7 +188,7 @@ Object
   //delete review from our states, listing and reviews collection
   const handleReviewDelete = async (reviewId) => {
     try {
-      const res = await fetch(`/api/listing/getList/${listing._id}/deleteReview/${reviewId}`, { method: 'DELETE' })
+      const res = await fetch(`/api/listings/${listing._id}/reviews/${reviewId}`, { method: 'DELETE' })
       const data = await res.json()
       setEditReview(false)
       setRatingAverage(getAverageRating(data.reviews))
@@ -210,7 +210,7 @@ Object
   const handleEditSubmit = async (e) => {
     e.preventDefault()
     try {
-      const res = await fetch(`/api/listing/getList/${listing._id}/getReview/${editFormData._id}/editReview`, {
+      const res = await fetch(`/api/listings/${listing._id}/reviews/${editFormData._id}/edit`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

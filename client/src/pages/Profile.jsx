@@ -67,11 +67,12 @@ export default function Profile() {
     })
   }
 
+  //sends the formData of the user to the user collection & updates the current logged in user obj.
   const handleSubmit = async (event) => {
     event.preventDefault()
     try {
       dispatch(updateUserStart())
-      const res = await fetch(`/api/user/update/${currentUser._id}`, {
+      const res = await fetch(`/api/users/${currentUser._id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -98,7 +99,7 @@ export default function Profile() {
       const UserId = currentUser._id
       dispatch(deleteUserStart())
       await deleteAllListings(UserId)
-      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+      const res = await fetch(`/api/users/${currentUser._id}`, {
         method: 'DELETE'
       })
       const data = res.json()
@@ -115,14 +116,15 @@ export default function Profile() {
   //delete all listings from our db, & listing uploads from our firebase.
   const deleteAllListings = async (UserId) => {
     try {
-      const res2 = await fetch(`/api/user/listings/${currentUser._id}`)
+      //retrieve all listings by the logged in user
+      const res2 = await fetch(`/api/users/${UserId}/listings`)
       const data2 = await res2.json()
       //deletes all listing uploads
       for(let i = 0; i < data2.length; i++) {
         deleteImageFromFirebase(data2[i].imageNames)
       }
       //deletes all listings created by the user & returns the listing docs that were deleted.
-      const res = await fetch(`/api/user/getUser/${UserId}/deleteListings`, {
+      const res = await fetch(`/api/users/${UserId}/listings`, {
         method: 'DELETE'
       })
       const data = await res.json()
@@ -152,7 +154,7 @@ export default function Profile() {
   const handleUserListings = async () => {
     try {
       setShowListingError(false)
-      const res = await fetch(`/api/user/listings/${currentUser._id}`)
+      const res = await fetch(`/api/users/${currentUser._id}/listings`)
       const data = await res.json()
       if (data.success === false) {
         setShowListingError(true)
@@ -175,7 +177,7 @@ export default function Profile() {
   const handleDeleteListing = async (listingId) => {
     try {
       //api returns the deleted listing doc
-      const res = await fetch(`/api/listing/delete/${listingId}`, { method: 'DELETE' })
+      const res = await fetch(`/api/listings/${listingId}`, { method: 'DELETE' })
       const data = await res.json()
       if (data.success === false) {
         return console.log(data)
@@ -211,6 +213,7 @@ export default function Profile() {
     <div className='max-w-lg m-auto p-3'>
       <h1 className='text-3xl font-semibold text-center my-7'>Profile</h1>
 
+      {/* updating profile form */}
       <form className='flex flex-col gap-5' onSubmit={handleSubmit}>
         <input onChange={(event) => setFile(event.target.files[0])} type="file" ref={fileRef} hidden />
 

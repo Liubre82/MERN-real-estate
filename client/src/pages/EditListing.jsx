@@ -42,7 +42,7 @@ export default function EditListing() {
     //retrieves the listing obj from the db to display the info as our 'initial form input values
     useEffect(() => { 
         const fetchListing = async () => {
-            const res = await fetch(`/api/listing/getList/${params.listingId}`)
+            const res = await fetch(`/api/listings/${params.listingId}`)
             const data = await res.json()
             if(data.success === false) {
                 console.log(data.message)
@@ -60,8 +60,9 @@ export default function EditListing() {
             const storage = getStorage(app)
             const fileName = new Date().getTime() + file.name
             filenames.push(fileName)
-            const storageRef = ref(storage, fileName)
-            const uploadTask = uploadBytesResumable(storageRef, file)
+            const storageRef = ref(storage, `${currentUser.username}${currentUser._id}`)
+            const listingRef = ref(storageRef, `listings/${fileName}`)
+            const uploadTask = uploadBytesResumable(listingRef, file)
             uploadTask.on(
                 "state_changed",
                 (snapshot) => {
@@ -176,7 +177,7 @@ export default function EditListing() {
             }
             setLoading(true)
             setError(false)
-            const res = await fetch(`/api/listing/edit/${params.listingId}`, {
+            const res = await fetch(`/api/listings/${params.listingId}/edit`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

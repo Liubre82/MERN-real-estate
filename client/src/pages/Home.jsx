@@ -20,7 +20,7 @@ export default function Home() {
     //fetch at most 4 of the most recent uploaded Offer listings.
     const fetchOfferListings = async () => {
       try {
-        const res = await fetch('/api/listing/getList?offer=true&limit=4')
+        const res = await fetch('/api/listings/listings?offer=true&limit=4')
         const data = await res.json()
         setOfferListings(data)
         fetchRentListings()
@@ -32,7 +32,7 @@ export default function Home() {
     //fetch at most 4 of the most recent uploaded Rent listings.
     const fetchRentListings = async () => {
       try {
-        const res = await fetch('/api/listing/getList?type=rent&limit=4')
+        const res = await fetch('/api/listings/listings?type=rent&limit=4')
         const data = await res.json()
         setRentListings(data)
         fetchSaleListings()
@@ -44,7 +44,7 @@ export default function Home() {
     //fetch at most 4 of the most recent uploaded Sale listings.
     const fetchSaleListings = async () => {
       try {
-        const res = await fetch('/api/listing/getList?type=sale&limit=4')
+        const res = await fetch('/api/listings/listings?type=sale&limit=4')
         const data = await res.json()
         setSaleListings(data)
       } catch (err) {
