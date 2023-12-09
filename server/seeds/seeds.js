@@ -4,6 +4,7 @@ import listings from './Listings.js'
 import reviews from './reviews.js'
 import Listing from '../models/listing.model.js'
 import dotenv from 'dotenv'
+import { reviewUsers } from './userIdParams.js'
 dotenv.config()
 
 /* Seeds file will CLEAR/DELETE your ENTIRE listings & reviews collection then store some static data to our db to have some initial data for our website, so we have something to display immediately rather than an empty website & having to manually create individual listings & reviews. 
@@ -50,10 +51,8 @@ const seedDb = async () => {
     await Listing.deleteMany({})
     await Review.deleteMany({})
 
-    const userIds = ["65603f2e3739a6fb33d25ea2", "65603f653739a6fb33d25ea4", "657020d95462f62d6b917356", "657027e70107280ef06ab28c"]
-
     for (let i = 0; i < listings.length; i++) {
-        const reviews = await createReviews(...userIds)
+        const reviews = await createReviews(...reviewUsers)
         shuffleArray(listings[i].imageUrls)
         const listing = new Listing({...listings[i], reviews})
         await listing.save()

@@ -146,14 +146,14 @@ export default function Search() {
                     
                     {/* CheckBox section */}
                     <div className='flex gap-3 flex-wrap items-center'>
-                        <p>Type: </p>
+                        <p className='font-mono text-xl'>Type: </p>
                         <CheckBox id={'all'} checkBoxToggle={formData.type === 'all'} handleChange={handleChange} name={'Rent & Sale'} />
                         <CheckBox id={'rent'} checkBoxToggle={formData.type === 'rent'} handleChange={handleChange} name={'Rent'} />
                         <CheckBox id={'sale'} checkBoxToggle={formData.type === 'sale'} handleChange={handleChange} name={'Sale'} />
                         <CheckBox id={'offer'} checkBoxToggle={formData.offer} handleChange={handleChange} name={'Offer'} />
                     </div>
                     <div className='flex gap-3 flex-wrap items-center'>
-                        <p>Amenities: </p>
+                        <p className='font-mono text-xl'>Amenities: </p>
                         <CheckBox id={'parking'} checkBoxToggle={formData.parking} handleChange={handleChange} name={'Parking'} />
 
                         <CheckBox id={'furnished'} checkBoxToggle={formData.furnished} handleChange={handleChange} name={'Furnished'} />
@@ -161,8 +161,8 @@ export default function Search() {
 
                     {/* dropDown Menu */}
                     <div>
-                        <label htmlFor="sort_order">Sort:</label>
-                        <select name="sort_order" defaultValue={'created_at_desc'} id="sort_order" onChange={handleChange}>
+                        <label htmlFor="sort_order" className='font-mono text-xl'>Sort: </label>
+                        <select name="sort_order" defaultValue={'created_at_desc'} id="sort_order" onChange={handleChange} className='p-1 rounded-lg'>
                             <option value='regularPrice_desc'>Price High to Low</option>
                             <option value='regularPrice_asc'>Price Low to High</option>
                             <option value='createdAt_desc'>Latest</option>

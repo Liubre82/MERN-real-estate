@@ -1,3 +1,5 @@
+import { listingUser } from "./userIdParams.js"
+
 
 const listings = [
     {
@@ -9,15 +11,15 @@ const listings = [
         name: "Newly renovated property",
         description: "Welcome to 1134 Winding Drive, the epitome of luxury and sophistication nestled in the heart of Cherry Hills most prestigious neighborhood of Voken Tract. This magnificent fully renovated home sits on almost 2 lush acres and offers an unparalleled living experience of privacy, style, and convenience. The home's opulence is immediately apparent upon entering. Your eyes will be drawn to 7-1/2 wide European oak wood floors, soft white and beige finishes, and black windows, all of which set a tone of refined elegance that flows throughout. The abundance of natural light and open floor plan accentuates the soft tones, and adds a sense of tranquility and spaciousness.",
         address: "3767 Wisteria Ln SW, Atlanta, GA 30331",
-        regularPrice: 545000,
-        discountPrice: 0,
-        bedrooms: 3,
-        bathrooms: 2,
+        regularPrice: 6630,
+        discountPrice: 320,
+        bedrooms: 5,
+        bathrooms: 3,
         furnished: true,
-        parking: true,
-        type: "sale",
-        offer: false,
-        userRef: '656fafb13c9b08467774033f'
+        parking: false,
+        type: "rent",
+        offer: true,
+        userRef: listingUser
     },
     {
         imageUrls: ['https://firebasestorage.googleapis.com/v0/b/mern-real-estate-9a14b.appspot.com/o/SeedsImages%2Fpost2(1).webp?alt=media&token=0ec41664-c3e4-41ba-a142-3d1bcb774c28',
@@ -38,7 +40,7 @@ const listings = [
         parking: true,
         type: "sale",
         offer: false,
-        userRef: '656fafb13c9b08467774033f'
+        userRef: listingUser
     },
     {
         imageUrls: ['https://firebasestorage.googleapis.com/v0/b/mern-real-estate-9a14b.appspot.com/o/SeedsImages%2Fpost3(1).webp?alt=media&token=f59057f9-b2e2-47f1-ac43-996adfadc57a', 'https://firebasestorage.googleapis.com/v0/b/mern-real-estate-9a14b.appspot.com/o/SeedsImages%2Fpost3(2).webp?alt=media&token=0416566e-9fad-497d-8a1e-f77b3f85da67',
@@ -55,7 +57,7 @@ const listings = [
         parking: true,
         type: "rent",
         offer: true,
-        userRef: '656fafb13c9b08467774033f'
+        userRef: listingUser
     },
     {
         imageUrls: ['https://firebasestorage.googleapis.com/v0/b/mern-real-estate-9a14b.appspot.com/o/SeedsImages%2Fpost4(1).webp?alt=media&token=4e10899c-ca6d-40e4-937c-1a45ac8508ef', 'https://firebasestorage.googleapis.com/v0/b/mern-real-estate-9a14b.appspot.com/o/SeedsImages%2Fpost4(2).webp?alt=media&token=630467d1-6451-499b-a143-708f877963d8',
@@ -73,7 +75,7 @@ const listings = [
         parking: false,
         type: "rent",
         offer: false,
-        userRef: '656fafb13c9b08467774033f'
+        userRef: listingUser
     },
     {
         imageUrls: ['https://firebasestorage.googleapis.com/v0/b/mern-real-estate-9a14b.appspot.com/o/SeedsImages%2Fpost5(1).webp?alt=media&token=f862c852-fc80-4cc4-969d-0bbd7a870e9d', 'https://firebasestorage.googleapis.com/v0/b/mern-real-estate-9a14b.appspot.com/o/SeedsImages%2Fpost5(2).webp?alt=media&token=0a3f3263-6f65-4769-81b1-d9282f0b3ae6',
@@ -91,7 +93,7 @@ const listings = [
         parking: false,
         type: "rent",
         offer: false,
-        userRef: '656fafb13c9b08467774033f'
+        userRef: listingUser
     },
     {
         imageUrls: ['https://firebasestorage.googleapis.com/v0/b/mern-real-estate-9a14b.appspot.com/o/SeedsImages%2Fpost6(1).webp?alt=media&token=5febf3a7-0e46-4afa-941b-620b14248889', 'https://firebasestorage.googleapis.com/v0/b/mern-real-estate-9a14b.appspot.com/o/SeedsImages%2Fpost6(2).webp?alt=media&token=5f6ca9ef-3a15-42fd-bdcb-c939aff67f62',
@@ -110,7 +112,7 @@ const listings = [
         parking: true,
         type: "sale",
         offer: true,
-        userRef: '656fafb13c9b08467774033f'
+        userRef: listingUser
     }, {
         imageUrls: ['https://firebasestorage.googleapis.com/v0/b/mern-real-estate-9a14b.appspot.com/o/SeedsImages%2Fpost1(1).jpg?alt=media&token=17f78ca8-3bfd-4900-bba5-48113c4d61fb',
             'https://firebasestorage.googleapis.com/v0/b/mern-real-estate-9a14b.appspot.com/o/SeedsImages%2Fpost1(2).png?alt=media&token=3cc3e259-b5e5-4b97-8cbd-0e82f31e5c58',
@@ -120,15 +122,15 @@ const listings = [
         name: "Newly renovated property",
         description: "Welcome to 1134 Winding Drive, the epitome of luxury and sophistication nestled in the heart of Cherry Hills most prestigious neighborhood of Voken Tract. This magnificent fully renovated home sits on almost 2 lush acres and offers an unparalleled living experience of privacy, style, and convenience. The home's opulence is immediately apparent upon entering. Your eyes will be drawn to 7-1/2 wide European oak wood floors, soft white and beige finishes, and black windows, all of which set a tone of refined elegance that flows throughout. The abundance of natural light and open floor plan accentuates the soft tones, and adds a sense of tranquility and spaciousness.",
         address: "3767 Wisteria Ln SW, Atlanta, GA 30331",
-        regularPrice: 435000,
+        regularPrice: 8560,
         discountPrice: 0,
         bedrooms: 3,
         bathrooms: 2,
-        furnished: true,
+        furnished: false,
         parking: true,
-        type: "sale",
+        type: "rent",
         offer: false,
-        userRef: '656fafb13c9b08467774033f'
+        userRef: listingUser
     },
     {
         imageUrls: ['https://firebasestorage.googleapis.com/v0/b/mern-real-estate-9a14b.appspot.com/o/SeedsImages%2Fpost2(1).webp?alt=media&token=0ec41664-c3e4-41ba-a142-3d1bcb774c28',
@@ -145,11 +147,11 @@ const listings = [
         discountPrice: 0,
         bedrooms: 7,
         bathrooms: 7,
-        furnished: true,
+        furnished: false,
         parking: true,
         type: "sale",
         offer: false,
-        userRef: '656fafb13c9b08467774033f'
+        userRef: listingUser
     },
     {
         imageUrls: ['https://firebasestorage.googleapis.com/v0/b/mern-real-estate-9a14b.appspot.com/o/SeedsImages%2Fpost3(1).webp?alt=media&token=f59057f9-b2e2-47f1-ac43-996adfadc57a', 'https://firebasestorage.googleapis.com/v0/b/mern-real-estate-9a14b.appspot.com/o/SeedsImages%2Fpost3(2).webp?alt=media&token=0416566e-9fad-497d-8a1e-f77b3f85da67',
@@ -166,7 +168,7 @@ const listings = [
         parking: true,
         type: "rent",
         offer: true,
-        userRef: '656fafb13c9b08467774033f'
+        userRef: listingUser
     },
     {
         imageUrls: ['https://firebasestorage.googleapis.com/v0/b/mern-real-estate-9a14b.appspot.com/o/SeedsImages%2Fpost4(1).webp?alt=media&token=4e10899c-ca6d-40e4-937c-1a45ac8508ef', 'https://firebasestorage.googleapis.com/v0/b/mern-real-estate-9a14b.appspot.com/o/SeedsImages%2Fpost4(2).webp?alt=media&token=630467d1-6451-499b-a143-708f877963d8',
@@ -184,7 +186,7 @@ const listings = [
         parking: false,
         type: "rent",
         offer: false,
-        userRef: '656fafb13c9b08467774033f'
+        userRef: listingUser
     },
     {
         imageUrls: ['https://firebasestorage.googleapis.com/v0/b/mern-real-estate-9a14b.appspot.com/o/SeedsImages%2Fpost5(1).webp?alt=media&token=f862c852-fc80-4cc4-969d-0bbd7a870e9d', 'https://firebasestorage.googleapis.com/v0/b/mern-real-estate-9a14b.appspot.com/o/SeedsImages%2Fpost5(2).webp?alt=media&token=0a3f3263-6f65-4769-81b1-d9282f0b3ae6',
@@ -202,7 +204,7 @@ const listings = [
         parking: false,
         type: "sale",
         offer: false,
-        userRef: '656fafb13c9b08467774033f'
+        userRef: listingUser
     },
     {
         imageUrls: ['https://firebasestorage.googleapis.com/v0/b/mern-real-estate-9a14b.appspot.com/o/SeedsImages%2Fpost6(1).webp?alt=media&token=5febf3a7-0e46-4afa-941b-620b14248889', 'https://firebasestorage.googleapis.com/v0/b/mern-real-estate-9a14b.appspot.com/o/SeedsImages%2Fpost6(2).webp?alt=media&token=5f6ca9ef-3a15-42fd-bdcb-c939aff67f62',
@@ -217,11 +219,11 @@ const listings = [
         discountPrice: 4000,
         bedrooms: 4,
         bathrooms: 2,
-        furnished: true,
+        furnished: false,
         parking: true,
         type: "sale",
         offer: true,
-        userRef: '656fafb13c9b08467774033f'
+        userRef: listingUser
     },
     {
         imageUrls: ['https://firebasestorage.googleapis.com/v0/b/mern-real-estate-9a14b.appspot.com/o/SeedsImages%2Fpost1(1).jpg?alt=media&token=17f78ca8-3bfd-4900-bba5-48113c4d61fb',
@@ -240,7 +242,7 @@ const listings = [
         parking: true,
         type: "sale",
         offer: false,
-        userRef: '656fafb13c9b08467774033f'
+        userRef: listingUser
     },
     {
         imageUrls: ['https://firebasestorage.googleapis.com/v0/b/mern-real-estate-9a14b.appspot.com/o/SeedsImages%2Fpost2(1).webp?alt=media&token=0ec41664-c3e4-41ba-a142-3d1bcb774c28',
@@ -253,15 +255,15 @@ const listings = [
         name: "Ranch House",
         description: "Welcome to 1134 Winding Drive, the epitome of luxury and sophistication nestled in the heart of Cherry Hills most prestigious neighborhood of Voken Tract. This magnificent fully renovated home sits on almost 2 lush acres and offers an unparalleled living experience of privacy, style, and convenience. The home's opulence is immediately apparent upon entering. Your eyes will be drawn to 7-1/2 wide European oak wood floors, soft white and beige finishes, and black windows, all of which set a tone of refined elegance that flows throughout. The abundance of natural light and open floor plan accentuates the soft tones, and adds a sense of tranquility and spaciousness.",
         address: "1134 Winding Dr, Cherry Hill, NJ 08003",
-        regularPrice: 15000000,
-        discountPrice: 0,
+        regularPrice: 5350,
+        discountPrice: 390,
         bedrooms: 8,
         bathrooms: 6,
         furnished: true,
         parking: true,
-        type: "sale",
-        offer: false,
-        userRef: '656fafb13c9b08467774033f'
+        type: "rent",
+        offer: true,
+        userRef: listingUser
     },
     {
         imageUrls: ['https://firebasestorage.googleapis.com/v0/b/mern-real-estate-9a14b.appspot.com/o/SeedsImages%2Fpost3(1).webp?alt=media&token=f59057f9-b2e2-47f1-ac43-996adfadc57a', 'https://firebasestorage.googleapis.com/v0/b/mern-real-estate-9a14b.appspot.com/o/SeedsImages%2Fpost3(2).webp?alt=media&token=0416566e-9fad-497d-8a1e-f77b3f85da67',
@@ -278,7 +280,7 @@ const listings = [
         parking: true,
         type: "rent",
         offer: true,
-        userRef: '656fafb13c9b08467774033f'
+        userRef: listingUser
     },
     {
         imageUrls: ['https://firebasestorage.googleapis.com/v0/b/mern-real-estate-9a14b.appspot.com/o/SeedsImages%2Fpost4(1).webp?alt=media&token=4e10899c-ca6d-40e4-937c-1a45ac8508ef', 'https://firebasestorage.googleapis.com/v0/b/mern-real-estate-9a14b.appspot.com/o/SeedsImages%2Fpost4(2).webp?alt=media&token=630467d1-6451-499b-a143-708f877963d8',
@@ -296,7 +298,7 @@ const listings = [
         parking: false,
         type: "rent",
         offer: false,
-        userRef: '656fafb13c9b08467774033f'
+        userRef: listingUser
     },
     {
         imageUrls: ['https://firebasestorage.googleapis.com/v0/b/mern-real-estate-9a14b.appspot.com/o/SeedsImages%2Fpost5(1).webp?alt=media&token=f862c852-fc80-4cc4-969d-0bbd7a870e9d', 'https://firebasestorage.googleapis.com/v0/b/mern-real-estate-9a14b.appspot.com/o/SeedsImages%2Fpost5(2).webp?alt=media&token=0a3f3263-6f65-4769-81b1-d9282f0b3ae6',
@@ -314,7 +316,7 @@ const listings = [
         parking: false,
         type: "sale",
         offer: false,
-        userRef: '656fafb13c9b08467774033f'
+        userRef: listingUser
     },
     {
         imageUrls: ['https://firebasestorage.googleapis.com/v0/b/mern-real-estate-9a14b.appspot.com/o/SeedsImages%2Fpost6(1).webp?alt=media&token=5febf3a7-0e46-4afa-941b-620b14248889', 'https://firebasestorage.googleapis.com/v0/b/mern-real-estate-9a14b.appspot.com/o/SeedsImages%2Fpost6(2).webp?alt=media&token=5f6ca9ef-3a15-42fd-bdcb-c939aff67f62',
@@ -333,7 +335,7 @@ const listings = [
         parking: false,
         type: "sale",
         offer: true,
-        userRef: '656fafb13c9b08467774033f'
+        userRef: listingUser
     },
     {
         imageUrls: ['https://firebasestorage.googleapis.com/v0/b/mern-real-estate-9a14b.appspot.com/o/SeedsImages%2Fpost7(1).webp?alt=media&token=efd636c2-c00c-4867-be37-bda0ff98c88b', 'https://firebasestorage.googleapis.com/v0/b/mern-real-estate-9a14b.appspot.com/o/SeedsImages%2Fpost7(2).webp?alt=media&token=ad95ef81-4306-419f-98e5-9bbba680e701',
@@ -351,7 +353,7 @@ const listings = [
         parking: true,
         type: "rent",
         offer: true,
-        userRef: '656fafb13c9b08467774033f'
+        userRef: listingUser
     },
     {
         imageUrls: ['https://firebasestorage.googleapis.com/v0/b/mern-real-estate-9a14b.appspot.com/o/SeedsImages%2FfixUpper(1).jpg?alt=media&token=d037fbab-fe79-4bc4-ad8e-a3f0c9c06554',
@@ -370,7 +372,7 @@ const listings = [
         parking: false,
         type: "sale",
         offer: false,
-        userRef: '656fafb13c9b08467774033f'
+        userRef: listingUser
     },
     {
         imageUrls: ['https://firebasestorage.googleapis.com/v0/b/mern-real-estate-9a14b.appspot.com/o/SeedsImages%2FfixUpper2(1).jpg?alt=media&token=1c2dfb78-b745-4041-ba02-03f4f4cc34d5',
@@ -389,7 +391,25 @@ const listings = [
         parking: false,
         type: "sale",
         offer: false,
-        userRef: '656fafb13c9b08467774033f'
+        userRef: listingUser
+    },
+    {
+        imageUrls: ['https://firebasestorage.googleapis.com/v0/b/mern-real-estate-9a14b.appspot.com/o/SeedsImages%2Fpost7(1).webp?alt=media&token=efd636c2-c00c-4867-be37-bda0ff98c88b', 'https://firebasestorage.googleapis.com/v0/b/mern-real-estate-9a14b.appspot.com/o/SeedsImages%2Fpost7(2).webp?alt=media&token=ad95ef81-4306-419f-98e5-9bbba680e701',
+            'https://firebasestorage.googleapis.com/v0/b/mern-real-estate-9a14b.appspot.com/o/SeedsImages%2Fpost7(3).webp?alt=media&token=d3024ce4-a537-48e7-8b8b-c05c2b83bc02',
+            'https://firebasestorage.googleapis.com/v0/b/mern-real-estate-9a14b.appspot.com/o/SeedsImages%2Fpost7(4).webp?alt=media&token=e0b25c45-b3d7-4e24-a662-b172f6ec11ad'],
+        imageNames: [],
+        name: "Newly renovated single family home",
+        description: "Immaculate SINGLE FAMILY home for rent in desirable Erlton section of Cherry Hill. This masterfully cared for 3-4 Bedroom 1.5 Bath Cape Cod home was totally renovated top to bottom in 2015!! HVAC, refinished natural hardwood flooring, COMPLETELY REMODELED EAT IN KITCHEN with GRANITE COUNTERTOPS are just a few of the upgrades that make this home TURN-KEY. Upon entry from the 4 car driveway you will notice the lovely hardwood floors in the living room opening up to a first-class kitchen with a large Island, Granite Countertops, newer appliances, tile floors and plenty of cabinet space for the modern family ready to host! NEED AN IN-LAW SUITE WITH A MAIN FLOOR FULL BATH?",
+        address: "116 New Hampshire Ave, Cherry Hill, NJ 08002",
+        regularPrice: 2799,
+        discountPrice: 160,
+        bedrooms: 2,
+        bathrooms: 2,
+        furnished: true,
+        parking: true,
+        type: "rent",
+        offer: false,
+        userRef: listingUser
     }
 
 ]
