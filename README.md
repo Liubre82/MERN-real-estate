@@ -13,7 +13,7 @@ and a review of a specific listing. user will also be able to contact a "landlor
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
-### Design Patterns
+### Design Patterns Used
 * MVC
 * REST API
 
