@@ -1,6 +1,6 @@
 # Estate-Finder-MERN
 
-
+[![projectPic][project.io]][project-url]
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
@@ -12,6 +12,10 @@ and a review of a specific listing. user will also be able to contact a "landlor
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+
+### Design Patterns
+* MVC
+* REST API
 
 
 ### Built With
@@ -35,6 +39,30 @@ and a review of a specific listing. user will also be able to contact a "landlor
 ## Getting Started
 
 setting up your project locally. To get a local copy up and running follow these steps.
+
+
+### Setup
+
+* create your own firebase project and initialize firebase. create a firebase.js file in the `client/src` directory
+
+  ```sh
+  inside your firebase Project settings, scroll down and copy the given firebase initializer code
+  and paste the code in the client/src/firebase.js file;
+   ```
+  [![firebaseConfig][firebase-config-img]][firebase-config-img-url]
+   
+* Create your own mongodb database & enter your mongodb connection string inside your `root` .env file (create a .env file in the `root` directory)
+  to connect to your MongoDB deployment.
+   ```js
+   mongodbConnect = 'ENTER YOUR MONGODB CONNECTION STRING';
+   ```
+   
+* Enter your jwt secret key inside your `root` .env file (create a .env file in the `root` directory).
+   ```js
+   JWT_SECRET = 'ENTER YOUR SECRET KEY';
+   ```
+
+
 
 ### Installation
 
@@ -60,31 +88,12 @@ setting up your project locally. To get a local copy up and running follow these
    ```
 
 
-### Setup
-
-* create your own firebase project and initialize firebase. create a firebase.js file in the `client/src` directory
-
-  ```sh
-  inside your firebase Project settings, scroll down and copy the given firebase initializer code
-  and paste the code in the client/src/firebase.js file;
-   ```
-  [![firebaseConfig][firebase-config-img]][firebase-config-img-url]
-   
-* Create your own mongodb database & enter your mongodb connection string inside your `root` .env file (create a .env file in the `root` directory)
-  to connect to your MongoDB deployment.
-   ```js
-   mongodbConnect = 'ENTER YOUR MONGODB CONNECTION STRING';
-   ```
-   
-* Enter your jwt secret key inside your `root` .env file (create a .env file in the `root` directory).
-   ```js
-   JWT_SECRET = 'ENTER YOUR SECRET KEY';
-   ```
 
 
 ### Deployment
 
 After everything is installed and created
+
    
 * To run the `client/` directory (INSIDE THE `ROOT` DIRECTORY)
    ```js
@@ -97,7 +106,23 @@ After everything is installed and created
    npm run dev
    ```
 
+* (Optional) add some initial data to our listings & reviews collection so your web page isn't empty
+  - First you must create ATLEAST 2 user accounts and retrieve the users _id.
+  - Then go to the server/seeds/userIdParams.js file & initialize 1 user _id to the listingUser variable & initialize the reviewUsers variable array
+  - Lastly, add ATLEAST 1 user id to the reviewUsers array, the _id you use cannot be the one you used for the listingUser variable.
 
+[![urlParams][urlParams.js]][urlParams-url]
+
+  After the variables are set correctly:
+
+
+  In the `root` directory
+  ```js
+  node server/seeds/seeds.js
+  ```
+
+- listings & reviews collection will now be populated & your website will display listings & reviews.
+- seeds.js WILL CLEAR YOUR ENTIRE LISTINGS & REVIEWS COLLECTION BEFORE ADDING THE INITIAL DATA INTO YOUR LISTINGS & REVIEWS COLLECTION
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -156,8 +181,13 @@ Project Link: [https://github.com/Liubre82/estate-Finder-MERN](https://github.co
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/linkedin_username
 [product-screenshot]: images/screenshot.png
-[firebase-config-img]: https://i.gyazo.com/0fbb4ca62c86e424d2f0c0ee4ddd083a.png
-[firebase-config-img-url]: https://i.gyazo.com/0fbb4ca62c86e424d2f0c0ee4ddd083a.png
+[firebase-config-img]: https://firebasestorage.googleapis.com/v0/b/mern-real-estate-9a14b.appspot.com/o/SeedsImages%2FfirebaseConfig(readme.md).png?alt=media&token=643cf4c1-72ae-4dd0-a3a9-442b663dd255
+[firebase-config-img-url]: https://firebasestorage.googleapis.com/v0/b/mern-real-estate-9a14b.appspot.com/o/SeedsImages%2FfirebaseConfig(readme.md).png?alt=media&token=643cf4c1-72ae-4dd0-a3a9-442b663dd255
+[urlParams.js]: https://firebasestorage.googleapis.com/v0/b/mern-real-estate-9a14b.appspot.com/o/SeedsImages%2FuserIdparams(forReadMe.md).png?alt=media&token=9c07515c-d365-4ecc-8e0c-9071e7d3ba2c
+[urlParams-url]: https://firebasestorage.googleapis.com/v0/b/mern-real-estate-9a14b.appspot.com/o/SeedsImages%2FuserIdparams(forReadMe.md).png?alt=media&token=9c07515c-d365-4ecc-8e0c-9071e7d3ba2c
+[project.io]: https://firebasestorage.googleapis.com/v0/b/mern-real-estate-9a14b.appspot.com/o/SeedsImages%2Fproject%20image.png?alt=media&token=5b717eb0-73d7-4be2-b7d9-fbe989bbec80
+[project-url]: https://firebasestorage.googleapis.com/v0/b/mern-real-estate-9a14b.appspot.com/o/SeedsImages%2Fproject%20image.png?alt=media&token=5b717eb0-73d7-4be2-b7d9-fbe989bbec80
+
 
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
 [React-url]: https://reactjs.org/
